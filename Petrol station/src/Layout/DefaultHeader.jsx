@@ -1,9 +1,32 @@
-import React from 'react'
+import React from "react";
 
-const DefaultHeader = () => {
+// image import
+import logo from "../assets/images/logo.svg";
+import Button from "../Component/Common/Button";
+
+const DefaultHeader = ({ page }) => {
   return (
-    <div>DefaultHeader</div>
-  )
-}
+    <>
+      {page === "home" && (
+        <div className="flex justify-between items-center">
+          <div className="">
+            <img src={logo} alt="" className="w-24" />
+          </div>
+          {/* Login and signup */}
+          <div className="flex space-x-4 items-center">
+            <Button
+              shade={"white"}
+              content={"Sign up"}
+            />
+            <Button
+              shade={"blue"}
+              content={"Login"}
+            />
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
 
-export default DefaultHeader
+export default DefaultHeader;
