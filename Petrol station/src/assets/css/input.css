@@ -4,5 +4,7 @@
 
 
 @layer components {
-    
+    .container_limiter {
+        @apply container mx-auto max-w-screen-large px-5 sm:px-6 ipad:px-8 desktop:px-10;
+      }
 }
