@@ -1,16 +1,16 @@
 import React from "react";
 
-const Button = ({ shade, content, icon }) => {
+const Button = ({ shade, content, icon}) => {
   const buttonStyle = (shade) => {
     var classStyle = "";
 
     switch (shade) {
-      case "green":
+      case "blue":
         classStyle =
-          "rounded-md px-6 py-2 font-mont text-lg focus:outline-uniuyoGreen  text-[#F2F2F2] bg-uniuyoGreen shadow-md hover:bg-dark1 hover:shadow-sm text-sm md:text-sm flex justify-center items-center";
+          "rounded-md px-6 py-2 font-semibold font-pt text-base focus:outline-primColor  text-[#F2F2F2] bg-primColor shadow-md hover:bg-primColor/80 hover:shadow-sm flex justify-center items-center";
         break;
-      case "bordered-green":
-        classStyle = `rounded-md px-6 py-2 font-mont focus:outline-uniuyoGreen text-lg border border-uniuyoGreen text-uniuyoGreen hover:text-[#F2F2F2] hover:bg-uniuyoGreen hover:shadow-sm transition-colors text-sm md:text-sm flex justify-center items-center`;
+      case "white":
+        classStyle = `rounded-md px-6 py-2 font-semibold font-pt focus:outline-white bg-white/70 text-base border border-white text-primColor hover:bg-white hover:shadow-sm transition-colors flex justify-center items-center`;
         break;
       case "bordered-white":
         classStyle = `rounded-md px-6 py-2 bg-transparent font-mont text-lg border border-[#F2F2F2] text-[#F2F2F2] hover:text-uniuyoGreen hover:bg-[#F2F2F2] hover:shadow-sm transition-colors text-sm md:text-sm flex justify-center items-center`;
