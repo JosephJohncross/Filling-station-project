@@ -28,6 +28,8 @@ import {
 } from "react-leaflet";
 import { Icon } from "leaflet";
 import DefaultHeader from "../Layout/DefaultHeader";
+import StationSearchCard from "../Component/Station/StationSearchCard";
+import { Link } from "react-router-dom";
 
 const Homepage = () => {
   const [latitude, setLatitude] = useState(51.505);
@@ -70,10 +72,11 @@ const Homepage = () => {
             <div className="container_limiter pt-3">
               <DefaultHeader page="home" />
             </div>
-            <div className="container_limiter mt-14">
-              <div className="w-max">
+            <div className="container w-full mini:w-[40rem] px-5 sm:px-6 ipad:px-8 desktop:px-10 mt-14 ">
+              <div className="max-w-xl shadow-rounded-xl">
+                {/* Upper filter */}
                 <div className="bg-primColor px-6 py-4 rounded-tr-md rounded-tl-md ">
-                  <div className="flex items-center space-x-3">                                    
+                  <div className="flex items-center space-x-3 justify-between">
                     <img
                       src={mylocation}
                       alt=""
@@ -88,13 +91,15 @@ const Homepage = () => {
                       class="absolute z-10 invisible inline-block px-3 py-2 text-xs font-medium text-white bg-gray-900/80 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
                     >
                       Get my location
-                      <div class="tooltip-arrow" data-popper-arrow></div>
+                      <div class="tooltip-arrow" data-popper-arrow>
+                        {" "}
+                      </div>
                     </div>
                     <div class="relative z-0">
                       <input
                         type="text"
                         id="default_standard"
-                        className="block placeholder:text-white/50 placeholder:font-medium py-2 px-0 w-full mini:min-w-[300px] text-sm bg-transparent border-0 border-gray-300 appearance-none text-white dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 peer"
+                        className="block placeholder:text-white/50 placeholder:font-medium py-2 px-0 w-full mini:min-w-[400px] text-sm bg-transparent border-0 border-gray-300 appearance-none text-white dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 peer"
                         placeholder="Search by Location, Town, Filling Station or Brand"
                         onChange={() => {}}
                       />
@@ -115,8 +120,7 @@ const Homepage = () => {
                   <div className="w-full h-[0.05rem] rounded-md bg-white"></div>
                 </div>
                 {/* Lower filter */}
-                <div className="bg-white px-6 py-4 rounded-br-md rounded-bl-md flex justify-end items-center">
-                
+                <div className="bg-white px-6 py-4 flex justify-end items-center">
                   <div className="flex items-center  space-x-2">
                     <p className="text-primColor font-semibold text-sm">
                       Filter
@@ -124,6 +128,39 @@ const Homepage = () => {
                     <img src={filter} alt="" className="cursor-pointer" />
                   </div>
                 </div>
+              </div>
+              {/* Filling station filter */}
+              <div className="max-w-xl mt-5 h-[60vh] overflow-y-auto flex flex-col gap-y-4 dashboard_scroll">
+                <StationSearchCard
+                  address={"Opposite Timber market Mbierebe."}
+                  dieselPrice={""}
+                  distance={"1.1 mi"}
+                  kerosinePrice={""}
+                  name={"Earthwell Filling Station"}
+                  openingTime={"8am-9pm"}
+                  petrolPrice={""}
+                  rating={"4"}
+                />
+                <StationSearchCard
+                  address={"Opposite Timber market Mbierebe."}
+                  dieselPrice={""}
+                  distance={"1.1 mi"}
+                  kerosinePrice={""}
+                  name={"Earthwell Filling Station"}
+                  openingTime={"8am-9pm"}
+                  petrolPrice={""}
+                  rating={"4"}
+                />
+                <StationSearchCard
+                  address={"Opposite Timber market Mbierebe."}
+                  dieselPrice={""}
+                  distance={"1.1 mi"}
+                  kerosinePrice={""}
+                  name={"Earthwell Filling Station"}
+                  openingTime={"8am-9pm"}
+                  petrolPrice={""}
+                  rating={"4"}
+                />
               </div>
             </div>
           </div>
@@ -159,9 +196,11 @@ const Homepage = () => {
                       className="w-full h-28"
                     />
                     <p className=""></p>
-                    <button className="w-full rounded-full px-3 py-2 bg-sky-400 hover:bg-sky-500 font-medium">
-                      Visit
-                    </button>
+                    <Link to={"/station"}>
+                      <button className="w-full text-white rounded-full px-3 py-2 bg-sky-400 hover:bg-sky-500 font-medium">
+                        Visit
+                      </button>
+                    </Link>
                   </div>
                 </Popup>
               </Marker>

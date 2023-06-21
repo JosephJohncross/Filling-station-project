@@ -10,5 +10,36 @@
     display: hidden;
     width: 0px;
   }
-  
+
+  /* Dashboard scroll */
+  .dashboard_scroll {
+    scrollbar-width: 0.3rem;
+    scroll-padding: 10px 10px;
+  }
+  .dashboard_scroll:-webkit-scrollbar {
+    width: 0.3rem;
+    outline: 2px solid rgba(112, 128, 144, 0.2);
+    border-radius: 6px;
+    background-color: rgba(112, 128, 144, 0.1);
+    padding: 0.7rem;
+    
+  }
+  /* .container:-webkit-scrollbar-track {
+  background: transparent;
+} */
+  .dashboard_scroll:-webkit-scrollbar-thumb {
+    @apply bg-primColor rounded-[6px];
+  }
+
+  .dashboard_scroll::-webkit-scrollbar-thumb {
+    @apply bg-primColor rounded-[6px];
+  }
+  .dashboard_scroll::-webkit-scrollbar {
+    width: 0.3rem;
+    outline: 2px solid rgba(112, 128, 144, 0.2);
+    border-radius: 6px;
+    background-color: rgba(112, 128, 144, 0.1);
+    padding: 0.7rem;
+    /* scroll-padding: 1px 10px; */
+  }
 }
