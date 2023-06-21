@@ -6,6 +6,7 @@ import SignUp from "../Component/Accounts/SignUp";
 import UserDashboard from "../Component/Dashboard/UserDashboard/UserDashboard";
 import StaffDashboard from "../Component/Dashboard/StaffAdminDashboard.jsx/StaffDashboard";
 import AdminDashboard from "../Component/Dashboard/AdminDashboard/AdminDashboard";
+import StationPage from "../Pages/StationPage";
 
 export const CustomRoutes = () => {
   return [
@@ -14,6 +15,7 @@ export const CustomRoutes = () => {
     <Route path="/" exact element={<Homepage />} />,
     <Route path="login" element={<Login />} />,
     <Route path="signup" element={<SignUp />} />,
+    <Route path="station" element={<StationPage />} />,
 
     // User route
     <Route path="/" element={<PrivateRoutes roles={"1"} />}>
