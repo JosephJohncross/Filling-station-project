@@ -185,11 +185,56 @@ const Homepage = () => {
                 position={[5.0421838, 7.9701854]}
                 key={1}
                 title="Piranha"
-                riseOnHover={true}
               >
                 <Popup>
                   <div className="font-didact w-44">
                     <p className="font-semibold">{"Piranha"}</p>
+                    <img
+                      src={houseListing}
+                      alt="propert-image"
+                      className="w-full h-28"
+                    />
+                    <p className=""></p>
+                    <Link to={"/station"}>
+                      <button className="w-full text-white rounded-full px-3 py-2 bg-sky-400 hover:bg-sky-500 font-medium">
+                        Visit
+                      </button>
+                    </Link>
+                  </div>
+                </Popup>
+              </Marker>
+              <Marker
+                icon={petrolIcon}
+                position={[5.0109127438901, 7.912567831854677]}
+                key={1}
+                title="First"
+              >
+                <Popup>
+                  <div className="font-didact w-44">
+                    <p className="font-semibold">{"First"}</p>
+                    <img
+                      src={houseListing}
+                      alt="propert-image"
+                      className="w-full h-28"
+                    />
+                    <p className=""></p>
+                    <Link to={"/station"}>
+                      <button className="w-full text-white rounded-full px-3 py-2 bg-sky-400 hover:bg-sky-500 font-medium">
+                        Visit
+                      </button>
+                    </Link>
+                  </div>
+                </Popup>
+              </Marker>
+              <Marker
+                icon={petrolIcon}
+                position={[5.028558312308946, 7.945100205293466]}
+                key={1}
+                title="Second"
+              >
+                <Popup>
+                  <div className="font-didact w-44">
+                    <p className="font-semibold">{"Second"}</p>
                     <img
                       src={houseListing}
                       alt="propert-image"
@@ -213,3 +258,4 @@ const Homepage = () => {
 };
 
 export default Homepage;
+// , 
