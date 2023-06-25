@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import bgimg from "../../assets/images/signupimg.svg";
+import leftsvg from "../../../public/unsplash.svg";
 import logo from "../../assets/images/logo.svg";
 
 const CustomerSignUp = () => {
@@ -16,10 +17,8 @@ const CustomerSignUp = () => {
     borderRadius: "0.25rem",
   };
 
-  const leftPage = {
-    backgroundImage: `url(${bgimg})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
+  const LeftPage = {
+    backgroundImage: `url(${leftsvg})`,
   };
 
   const rightPage = {
@@ -30,21 +29,22 @@ const CustomerSignUp = () => {
     <div>
       <div className="flex flex-row h-screen">
         {/* left flex */}
-        <div style={leftPage} className="left w-1/3 flex flex-col h-screen relative">
-          <img className="w-28 absolute top-5 left-5" src={logo} alt="logo" />
-          <div className="h-screen flex flex-col justify-center px-5">
-            <h3 className="text-white my-6 text-3xl font-bold font-pt">
-              Uyo Fuel Inform tells you all you need to know on
-            </h3>
-            <ul className="text-white flex flex-col gap-y-3">
-              <li>The Availability of Fuel in Filling Stations around you</li>
-              <li>The Price of Fuel in each Filling Station</li>
-              <li>The Distance of the Fuel Station from you</li>
-              <li>Reviews from other Customers</li>
-              <li>Fuel Insights</li>
-              <li>and many more...</li>
-            </ul>
-          </div>
+        <div
+          className="left h-full w-1/3 flex flex-col px-8 gap-8 justify-center"
+          style={LeftPage}
+        >
+          <img className="w-48" src={logo} alt="logo" />
+          <h1 className="text-3xl text-white font-pt font-bold">
+            Uyo Fuel Inform tells you all you need to know on
+          </h1>
+          <ul className="text-sm text-white flex flex-col gap-4">
+            <li>The Availability of Fuel in Filling Stations around you</li>
+            <li>The Price of Fuel in each Filling Station</li>
+            <li>The Distance of the Fuel Station from you</li>
+            <li>Reviews from other Customers</li>
+            <li>Fuel Insights</li>
+            <li>and many more...</li>
+          </ul>
         </div>
         {/* right flex */}
         <div className="right w-2/3 pl-10 pt-24" style={rightPage}>

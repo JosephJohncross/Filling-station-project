@@ -17,8 +17,8 @@ export const CustomRoutes = () => {
     <Route path="/" exact element={<Homepage />} />,
     <Route path="login" element={<Login />} />,
     <Route path="signup" element={<SignUp />} />,
-    <Route path="stationsignup" element={<StationSignUp />} />,
-    <Route path="customersignup" element={<CustomerSignUp />} />,
+    <Route path="/stationsignup" element={<StationSignUp />} />,
+    <Route path="/customersignup" element={<CustomerSignUp />} />,
     <Route path="station" element={<StationPage />} />,
 
     // User route
