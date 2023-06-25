@@ -3,6 +3,8 @@ import Homepage from "../Pages/Homepage";
 import PrivateRoutes from "./PrivateRoutes";
 import Login from "../Component/Accounts/Login";
 import SignUp from "../Component/Accounts/SignUp";
+import StationSignUp from "../Component/Accounts/StationSignUp";
+import CustomerSignUp from "../Component/Accounts/CustomerSignUp";
 import UserDashboard from "../Component/Dashboard/UserDashboard/UserDashboard";
 import StaffDashboard from "../Component/Dashboard/StaffAdminDashboard.jsx/StaffDashboard";
 import AdminDashboard from "../Component/Dashboard/AdminDashboard/AdminDashboard";
@@ -15,6 +17,8 @@ export const CustomRoutes = () => {
     <Route path="/" exact element={<Homepage />} />,
     <Route path="login" element={<Login />} />,
     <Route path="signup" element={<SignUp />} />,
+    <Route path="stationsignup" element={<StationSignUp />} />,
+    <Route path="customersignup" element={<CustomerSignUp />} />,
     <Route path="station" element={<StationPage />} />,
 
     // User route
