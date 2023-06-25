@@ -3,14 +3,7 @@ import bgimg from "../../assets/images/signupimg.svg";
 import logo from "../../assets/images/logo.svg";
 
 const StationSignUp = () => {
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  };
-
   const buttonStyle = {
-    backgroundColor: isChecked ? "blue" : "gray",
     color: "white",
     padding: "0.5rem 1rem",
     borderRadius: "0.25rem",
@@ -48,7 +41,7 @@ const StationSignUp = () => {
         </div>
         {/* right flex */}
         <div className="right w-2/3 pl-10 pt-24" style={rightPage}>
-          <div className="flex right-80 absolute">
+          <div className="flex flex-row justify-end">
             <p>Have an account already?</p>
             <button className="bg-white ">Sign in</button>
           </div>
@@ -64,9 +57,20 @@ const StationSignUp = () => {
                 className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
               />
             </label>
-            <label className="block w-3/5">
+            <div className="flex flex-row gap-16">
+            <label className="block w-64">
               <span className="block text-sm font-medium text-slate-700">
-                Email/Phone number
+                Phone number
+              </span>
+              <input
+                type="text"
+                name="phonenumber"
+                className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+              />
+            </label>  
+            <label className="block w-64">
+              <span className="block text-sm font-medium text-slate-700">
+                Email
               </span>
               <input
                 type="email"
@@ -74,7 +78,27 @@ const StationSignUp = () => {
                 className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
               />
             </label>
+            </div>
             <label className="block w-3/5">
+              <span className="block text-sm font-medium text-slate-700">
+                Place Id
+              </span>
+              <input
+                type="text"
+                name="placeid"
+                className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+              />
+            </label>
+            <label className="block w-3/5">
+              <span className="block text-sm font-medium text-slate-700">
+                License Number
+              </span>
+              <input
+                type="text"
+                name="license"
+                className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+              />
+            </label>   <label className="block w-3/5">
               <span className="block text-sm font-medium text-slate-700">
                 Password
               </span>
@@ -84,18 +108,7 @@ const StationSignUp = () => {
                 className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
               />
             </label>
-            <label className="flex w-3/5">
-              <input
-                type="checkbox"
-                className="checked:bg-blue-500 w-8 h-8 mx-2"
-                onChange={handleCheckboxChange}
-              />
-              <p>
-                Creating an account means you are OK with our terms of services,
-                Privacy Policy and default Notification Settings
-              </p>
-            </label>
-            <button className="w-1/5" style={buttonStyle} disabled={!isChecked}>
+            <button className="w-1/5 bg-blue-800 text-white" style={buttonStyle}>
               Submit
             </button>
           </form>
