@@ -226,29 +226,6 @@ const Homepage = () => {
                   </div>
                 </Popup>
               </Marker>
-              <Marker
-                icon={petrolIcon}
-                position={[5.028558312308946, 7.945100205293466]}
-                key={1}
-                title="Second"
-              >
-                <Popup>
-                  <div className="font-didact w-44">
-                    <p className="font-semibold">{"Second"}</p>
-                    <img
-                      src={houseListing}
-                      alt="propert-image"
-                      className="w-full h-28"
-                    />
-                    <p className=""></p>
-                    <Link to={"/station"}>
-                      <button className="w-full text-white rounded-full px-3 py-2 bg-sky-400 hover:bg-sky-500 font-medium">
-                        Visit
-                      </button>
-                    </Link>
-                  </div>
-                </Popup>
-              </Marker>
             </MapContainer>
           </div>
         </section>
@@ -258,4 +235,3 @@ const Homepage = () => {
 };
 
 export default Homepage;
-// , 

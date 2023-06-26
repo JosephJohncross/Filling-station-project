@@ -6,6 +6,9 @@
   .container_limiter {
     @apply container mx-auto max-w-screen-large px-5 sm:px-6 ipad:px-8 desktop:px-10;
   }
+  .dashboard_limiter {
+    @apply container mx-auto max-w-[1100px] px-5 sm:px-6 ipad:px-7 desktop:px-8;
+  }
   .map-scroll::-webkit-scrollbar {
     display: hidden;
     width: 0px;
@@ -22,7 +25,6 @@
     border-radius: 6px;
     background-color: rgba(112, 128, 144, 0.1);
     padding: 0.7rem;
-    
   }
   /* .container:-webkit-scrollbar-track {
   background: transparent;
@@ -42,4 +44,34 @@
     padding: 0.7rem;
     /* scroll-padding: 1px 10px; */
   }
+
+  /* Admin dashboard */
+  .admin__layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: max-content 1fr;
+  }
+  /* Dashboard components */
+  .amenity-input {
+    appearance: none; /* Remove the default appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+  }
+  .amenity-input:checked {
+    @apply bg-primColor /* bg-green-500 */
+  }
+
+  .amenity-input:checked ~ span:last-child {
+    /* --tw-translate-x: 1.75rem;  */
+    /* translate-x-7 */
+    @apply translate-x-7
+  }
+  .amenity-input ~ span:last-child{
+    @apply -translate-x-7
+  }
+  .amenity-input ~ .amenity-input:after {
+    display: none;
+  }
 }
+
