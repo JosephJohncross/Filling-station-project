@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import AdminLayout from "../Layout/AdminLayout";
 import StaffLayout from "../Layout/StaffLayout";
 import AuthContext from "../Context/AuthContext";
 import UserLayout from "../Layout/UserLayout";
+import AdminDashboard from "../Component/Dashboard/AdminDashboard/AdminDashboard";
 
 const PrivateRoutes = ({ role }) => {
   let location = useLocation();
@@ -14,9 +14,12 @@ const PrivateRoutes = ({ role }) => {
     return <UserLayout />;
   } else if (user && user.role === 2) {
     return <StaffLayout />;
-  } else if (user && user.role === 3) {
-    return <AdminLayout/>;
+  } else {
+    return <AdminDashboard/>;
   } 
+  // else if (user && user.role === 3) {
+  //   return <AdminLayout/>;
+  // } 
 //   else {
 //     return <Navigate to={"/login"} />;
 //   }
