@@ -99,16 +99,6 @@ const AdminDashboard = () => {
                     Hi, Welcome Back
                   </p>
                   {/* Toggle Open and Close */}
-                  {/* <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      value=""
-                      className="sr-only peer"
-                      checked
-                      onChange={() => {}}
-                    />
-                    <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                  </label> */}
                   <label className="flex items-center relative w-max cursor-pointer select-none">
                     <input
                       type="checkbox"
@@ -314,7 +304,127 @@ const AdminDashboard = () => {
               {/* Station profile */}
               {state.activeTab === "prof" && (
                 <>
-                  <div className="">Station Profile</div>
+                  <div className="dashboard_limiter mt-8 flex justify-between mini:gap-x-16">
+                    <div className="shadow-rounded-md w-full flex md:gap-x-4 mini:py-16 mini:px-12">
+                      {/* Left flex */}
+                      <div className="flex flex-col items-center mini:w-1/2 border-r-2 ">
+                        {/* Image field */}
+                        <div className="flex items-center justify-center w-full">
+                          <label
+                            for="dropzone-file"
+                            className="relative flex flex-col items-center justify-center w-44 h-44 border  rounded-full cursor-pointer bg-gray-50"
+                          >
+                            <img
+                              src="/updateImg.svg"
+                              className="absolute bottom-0 w-9 right-4"
+                            />
+                            <img
+                              src={"/stationImg.png"}
+                              className="w-full h-full"
+                            />
+                            <input
+                              id="dropzone-file"
+                              type="file"
+                              className="hidden"
+                            />
+                          </label>
+                        </div>
+                        <p className="font-pt text-xl text-slate-800 pt-5">
+                          Total Filling Station
+                        </p>
+                        <p className="font-open pt-3">
+                          No. 128 Use Offot, Nwaniba Road, Uyo
+                        </p>
+                        <p className="font-open pt-3">0701-123-335</p>
+                        <p className="font-open font-medium pt-2">
+                          <span className="text-primColor font-semibold">
+                            Open
+                          </span>{" "}
+                          | 8am-8pm
+                        </p>
+                      </div>
+                      {/* Right flex */}
+                      <div className="mini:w-1/2 mini:pl-4">
+                        <h3 className="text-lg font-pt text-[#1B1B1B]">
+                          Update profile
+                        </h3>
+                        {/* Input fields */}
+                        <div className="pt-8">
+                          {/* Station name */}
+                          <div className="space-y-2 mb-7">
+                            <label
+                              htmlFor="station_name"
+                              className="font-semibold"
+                            >
+                              Name
+                            </label>
+                            <input
+                              id="station_name"
+                              type="text"
+                              name="station_name"
+                              className="w-full outline-none  focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 rounded-lg p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                            />
+                          </div>
+                          {/* Address */}
+                          <div className="space-y-2 mb-7">
+                            <label
+                              htmlFor="station_name"
+                              className="font-semibold"
+                            >
+                              Address
+                            </label>
+                            <input
+                              id="station_name"
+                              type="text"
+                              name="station_name"
+                              className="w-full outline-none  focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 rounded-lg p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                            />
+                          </div>
+                          {/* Station phone */}
+                          <div className="space-y-2 mb-7">
+                            <label
+                              htmlFor="station_name"
+                              className="font-semibold"
+                            >
+                              Phone Number
+                            </label>
+                            <input
+                              id="station_name"
+                              type="text"
+                              name="station_name"
+                              className="w-full outline-none  focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 rounded-lg p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                            />
+                          </div>
+                          {/* Operation time */}
+                          <div className="space-y-2 mb-7">
+                            <label
+                              htmlFor="station_name"
+                              className="font-semibold"
+                            >
+                              Operation Time
+                            </label>
+                            <input
+                              id="station_name"
+                              type="text"
+                              name="station_name"
+                              className="w-full outline-none  focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 rounded-lg p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                            />
+                          </div>
+                          {/* Submit button */}
+                          <div className="mb-16 flex justify-end pt-5">
+                            <button
+                              className=" bg-primColor hover:bg-primColor/80 text-white border border-transparent w-max transition-colors rounded-full rounded-tl-none p-1 px-3 flex space-x-3 items-center cursor-point"
+                              onClick={(e) => {
+                                e.preventDefault();
+                              }}
+                            >
+                              <p className="font-semibold font-open">Save Changes</p>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </>
               )}
             </div>
