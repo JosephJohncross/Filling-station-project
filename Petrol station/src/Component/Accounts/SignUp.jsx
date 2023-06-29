@@ -4,6 +4,7 @@ import customericon from "../../assets/images/Group.svg";
 import stationicon from "../../assets/images/Vector.svg";
 import logo from "../../../src/assets/images/logo.svg";
 import { Link } from "react-router-dom";
+
 const SignUp = () => {
   const LeftPage = {
     backgroundImage: `url(${leftsvg})`,

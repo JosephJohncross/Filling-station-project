@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import bgimg from "../../assets/images/signupimg.svg";
 import leftsvg from "../../assets/images/unsplash.svg";
 import logo from "../../assets/images/logo.svg";
-
+import { Link } from "react-router-dom";
 const CustomerSignUp = () => {
   const [isChecked, setIsChecked] = useState(false);
 
@@ -50,7 +50,7 @@ const CustomerSignUp = () => {
         <div className="right w-2/3 pl-10 pt-24" style={rightPage}>
           <div className="flex right-80 absolute">
             <p>Have an account already?</p>
-            <button className="bg-white ">Sign in</button>
+            <Link to="/login" className="bg-white">Sign in</Link>
           </div>
           <h1 className="text-3xl font-bold">Sign Up</h1>
           <form className="my-5 grid gap-7">
