@@ -20,8 +20,8 @@ const getData = () => {
 };
 
 const complexSettings = {
-    width: "50%",
-    height: 800,
+    width: "100%",
+    height: "100%",
     type: 'column',
     data: getData(),
     title: '',
@@ -39,7 +39,7 @@ const complexSettings = {
     
   };
 
-const Histogram = ({data}) => {
+const Histogram = ({width}) => {
   
   return (
     <>
