@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import bgimg from "../../assets/images/signupimg.svg";
-import leftsvg from "../../../public/unsplash.svg";
+import leftsvg from "../../assets/images/unsplash.svg";
 import logo from "../../assets/images/logo.svg";
 
 const CustomerSignUp = () => {

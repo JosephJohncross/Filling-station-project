@@ -1,7 +1,7 @@
 import React from "react";
-import leftsvg from "../../../public/unsplash.svg";
-import customericon from "../../../public/Group.svg";
-import stationicon from "../../../public/Vector.svg";
+import leftsvg from "../../assets/images/unsplash.svg";
+import customericon from "../../assets/images/Group.svg";
+import stationicon from "../../assets/images/Vector.svg";
 import logo from "../../../src/assets/images/logo.svg";
 import { Link } from "react-router-dom";
 const SignUp = () => {
