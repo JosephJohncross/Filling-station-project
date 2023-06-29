@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import bgimg from "../../assets/images/signupimg.svg";
 import logo from "../../assets/images/logo.svg";
+import { Link } from "react-router-dom";
 
 const StationSignUp = () => {
   const buttonStyle = {
@@ -23,7 +24,10 @@ const StationSignUp = () => {
     <div>
       <div className="flex flex-row h-screen">
         {/* left flex */}
-        <div style={leftPage} className="left w-1/3 flex flex-col h-screen relative">
+        <div
+          style={leftPage}
+          className="left w-1/3 flex flex-col h-screen relative"
+        >
           <img className="w-28 absolute top-5 left-5" src={logo} alt="logo" />
           <div className="h-screen flex flex-col justify-center px-5">
             <h3 className="text-white my-6 text-3xl font-bold font-pt">
@@ -43,7 +47,9 @@ const StationSignUp = () => {
         <div className="right w-2/3 pl-10 pt-24" style={rightPage}>
           <div className="flex flex-row justify-end">
             <p>Have an account already?</p>
-            <button className="bg-white ">Sign in</button>
+            <Link to="/login" className="bg-white">
+              Sign in
+            </Link>
           </div>
           <h1 className="text-3xl font-bold">Sign Up</h1>
           <form className="my-5 grid gap-7">
@@ -58,26 +64,26 @@ const StationSignUp = () => {
               />
             </label>
             <div className="flex flex-row gap-16">
-            <label className="block w-64">
-              <span className="block text-sm font-medium text-slate-700">
-                Phone number
-              </span>
-              <input
-                type="text"
-                name="phonenumber"
-                className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
-              />
-            </label>  
-            <label className="block w-64">
-              <span className="block text-sm font-medium text-slate-700">
-                Email
-              </span>
-              <input
-                type="email"
-                name="email"
-                className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
-              />
-            </label>
+              <label className="block w-64">
+                <span className="block text-sm font-medium text-slate-700">
+                  Phone number
+                </span>
+                <input
+                  type="text"
+                  name="phonenumber"
+                  className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+                />
+              </label>
+              <label className="block w-64">
+                <span className="block text-sm font-medium text-slate-700">
+                  Email
+                </span>
+                <input
+                  type="email"
+                  name="email"
+                  className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+                />
+              </label>
             </div>
             <label className="block w-3/5">
               <span className="block text-sm font-medium text-slate-700">
@@ -98,7 +104,8 @@ const StationSignUp = () => {
                 name="license"
                 className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
               />
-            </label>   <label className="block w-3/5">
+            </label>{" "}
+            <label className="block w-3/5">
               <span className="block text-sm font-medium text-slate-700">
                 Password
               </span>
@@ -108,7 +115,10 @@ const StationSignUp = () => {
                 className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
               />
             </label>
-            <button className="w-1/5 bg-blue-800 text-white" style={buttonStyle}>
+            <button
+              className="w-1/5 bg-blue-800 text-white"
+              style={buttonStyle}
+            >
               Submit
             </button>
           </form>

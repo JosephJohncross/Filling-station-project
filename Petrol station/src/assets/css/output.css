@@ -1283,6 +1283,7 @@ video {
   margin-top: 1.25rem;
 }
 
+<<<<<<< HEAD
 .mt-7 {
   margin-top: 1.75rem;
 }
@@ -1306,6 +1307,8 @@ video {
 .\!block {
   display: block !important;
 }
+=======
+>>>>>>> main
 
 .block {
   display: block;
@@ -1731,8 +1734,8 @@ video {
 
 .w-screen {
   width: 100vw;
-}
 
+<<<<<<< HEAD
 .min-w-0 {
   min-width: 0px;
 }
@@ -1785,6 +1788,8 @@ video {
 .max-w-xl {
   max-width: 36rem;
 }
+=======
+>>>>>>> main
 
 .flex-auto {
   flex: 1 1 auto;
@@ -2093,8 +2098,13 @@ video {
   flex-direction: column;
 }
 
+<<<<<<< HEAD
 .flex-wrap {
   flex-wrap: wrap;
+=======
+.place-items-center {
+  place-items: center;
+>>>>>>> main
 }
 
 .items-center {
@@ -2145,6 +2155,7 @@ video {
   gap: 2rem;
 }
 
+<<<<<<< HEAD
 .gap-x-3 {
   -moz-column-gap: 0.75rem;
        column-gap: 0.75rem;
@@ -2154,6 +2165,8 @@ video {
   row-gap: 2.5rem;
 }
 
+=======
+>>>>>>> main
 .gap-y-3 {
   row-gap: 0.75rem;
 }
@@ -2251,6 +2264,10 @@ video {
 .divide-slate-500 > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-opacity: 1;
   border-color: rgb(100 116 139 / var(--tw-divide-opacity));
+}
+
+.place-self-center {
+  place-self: center;
 }
 
 .overflow-hidden {
@@ -2944,6 +2961,7 @@ video {
   padding-bottom: 2.25rem;
 }
 
+<<<<<<< HEAD
 .py-\[0\.32rem\] {
   padding-top: 0.32rem;
   padding-bottom: 0.32rem;
@@ -2976,6 +2994,16 @@ video {
 
 .pb-0 {
   padding-bottom: 0px;
+=======
+.px-12 {
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.px-24 {
+  padding-left: 6rem;
+  padding-right: 6rem;
+>>>>>>> main
 }
 
 .pb-2 {
