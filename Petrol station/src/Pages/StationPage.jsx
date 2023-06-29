@@ -88,11 +88,11 @@ const StationPage = () => {
 
   return (
     <section className="">
-      <div className="container_limiter">
-        <CustomHeader />
+      <CustomHeader />
+      <div className="container_limiter mt-8">
         <>
           <section className="">
-            <h1 className="font-pt text-4xl text-[#1b1b1b] mb-6">
+            <h1 className="font-pt text-4xl text-[#1b1b1b] mb-12">
               Mobile Filling Station Oron Road
             </h1>
             <div className="flex flex-col mini:flex-row mini:justify-between mini:space-x-9">
@@ -145,13 +145,13 @@ const StationPage = () => {
                   </div>
                 </div>
                 {/* Fuel Prices */}
-                <div className="">
+                <div className="mb-7 mini:mb-0">
                   <p className="font-pt text-xl text-[#1B1B1B] py-4">
                     Fuel Prices
                   </p>
-                  <div className="shadow-rounded-md rounded-md py-9 px-10 flex space-x-6 items-center">
+                  <div className="shadow-rounded-md rounded-md py-9 mini:px-10 flex mini:space-x-6 items-center">
                     {/* Naira */}
-                    <div className="">
+                    <div className="hidden mini:block">
                       <img src={naira} alt="" />
                     </div>
                     <div className="w-full flex items-center divide-x-2">
@@ -190,7 +190,7 @@ const StationPage = () => {
               </div>
               {/* Right flex */}
               <div className="w-full mini:w-2/5">
-                <div className="map-scroll rounded-lg mini:h-[70vh] mb-4">
+                <div className="map-scroll rounded-lg h-[70vh] mb-4">
                   <MapContainer
                     center={[5.0421838, 7.9701854]}
                     zoom={12}
@@ -216,17 +216,6 @@ const StationPage = () => {
                       <Popup>
                         <div className="font-didact w-44 text-center">
                           <p className="font-semibold">{"Piranha"}</p>
-                          {/* <img
-                            src={houseListing}
-                            alt="propert-image"
-                            className="w-full h-28"
-                          />
-                          <p className=""></p>
-                          <Link to={"/station"}>
-                            <button className="w-full text-white rounded-full px-3 py-2 bg-sky-400 hover:bg-sky-500 font-medium">
-                              Visit
-                            </button>
-                          </Link> */}
                         </div>
                       </Popup>
                     </Marker>
@@ -240,7 +229,7 @@ const StationPage = () => {
             {/* Reviews and services */}
             <div className="flex flex-col mini:flex-row mini:justify-between mini:space-x-9 mt-10">
               {/* Reviews */}
-              <div className="flex flex-col gap-y-4 mini:gap-6 mini:w-3/5">
+              <div className="flex flex-col gap-y-4 mini:gap-6 mini:w-3/5 order-2 mini:order-1">
                 <p className="font-pt text-xl text-[#1B1B1B] py-4">Reviews</p>
                 {/* Review box */}
                 <div>
@@ -294,18 +283,12 @@ const StationPage = () => {
                   />
                 </div>
                 <div className="flex justify-between">
-                  <Button
-                    content={"Go Back"}
-                    shade={'white'}
-                  />
-                  <Button
-                    content={"See more"}
-                    shade={'blue'}
-                  />
+                  <Button content={"Go Back"} shade={"white"} />
+                  <Button content={"See more"} shade={"blue"} />
                 </div>
               </div>
               {/* Services */}
-              <div className="w-full mini:w-2/5 flex flex-col gap-y-6 mini:gap-y-8">
+              <div className="w-full mini:w-2/5 flex flex-col gap-y-6 mini:gap-y-8 order-1 mini:order-2">
                 {/* Other features */}
                 <div className="">
                   <p className="font-pt text-xl text-[#1B1B1B] py-4">
