@@ -12,10 +12,10 @@ const ReviewCard = ({ img, review, date, author }) => {
         </div>
         <div className="">
             <p className="font-semibold">{author}</p>
-            <p className="text-sm">{date}</p>
+            <p className="text-sm text-gray-700">{date}</p>
         </div>
       </div>
-      <p className="font-open text-sm font-normal">{review}</p>
+      <p className="font-open text-gray-700 text-sm font-normal">{review}</p>
     </div>
   );
 };

@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "anychart-react": "^1.4.1",
     "axios": "^1.4.0",
     "http-proxy-middleware": "^2.0.6",
     "immer": "^10.0.2",

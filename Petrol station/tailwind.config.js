@@ -17,7 +17,8 @@ export default {
       boxShadow: {
         "rounded-xl": "0px 0px 25px -5px rgba(0, 0, 0, 0.3)",
         "rounded-md": "0px 0px 8px 1px rgba(0, 0, 0, 0.1)",
-        "rounded-xl-soft": "0px 0px 6px 1px rgba(0, 0, 0, 0.07)"
+        "rounded-xl-soft": "0px 0px 6px 1px rgba(0, 0, 0, 0.07)",
+        "dashboard-shadow": "10px 0px 10px 0px rgba(0, 0, 0, 0.07)",
       },
       screens: {
         small: "500px",
