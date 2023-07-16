@@ -68,3 +68,54 @@ export const stationDummyData = [
     verified: true,
   },
 ];
+
+export const userDummyData = [
+  {
+    name: "Lawrenz001",
+    dateRegistered: "13-07-2023",
+    phone: "07025365421",
+    email: "myemailaddress.com",
+  },
+  {
+    name: "Lawrenz001",
+    dateRegistered: "13-07-2023",
+    phone: "07025365421",
+    email: "myemailaddress.com",
+  },
+  {
+    name: "Lawrenz001",
+    dateRegistered: "13-07-2023",
+    phone: "07025365421",
+    email: "myemailaddress.com",
+  },
+  {
+    name: "Lawrenz001",
+    dateRegistered: "13-07-2023",
+    phone: "07025365421",
+    email: "myemailaddress.com",
+  },
+  {
+    name: "Lawrenz001",
+    dateRegistered: "13-07-2023",
+    phone: "07025365421",
+    email: "myemailaddress.com",
+  },
+  {
+    name: "Lawrenz001",
+    dateRegistered: "13-07-2023",
+    phone: "07025365421",
+    email: "myemailaddress.com",
+  },
+  {
+    name: "Lawrenz001",
+    dateRegistered: "13-07-2023",
+    phone: "07025365421",
+    email: "myemailaddress.com",
+  },
+  {
+    name: "Lawrenz001",
+    dateRegistered: "13-07-2023",
+    phone: "07025365421",
+    email: "myemailaddress.com",
+  },
+];

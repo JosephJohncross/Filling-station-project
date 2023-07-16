@@ -18,15 +18,15 @@ const PrivateRoutes = () => {
   } else if (user && user.role === 2) {
     return <AdminDashboard />;
   }
-  // else if (user && user.role === 3) {
-  //   return <SuperAdminDashboard/>;
-  // }
-  else if (true) {
+  else if (user && user.role === 3) {
     return <SuperAdminDashboard/>;
   }
-  //   else {
-  //     return <Navigate to={"/login"} />;
-  //   }
+  else if (true) {
+    return <UserDashboard/>;
+  }
+    // else {
+    //   return <Navigate to={"/login"} />;
+    // }
 };
 
 export default PrivateRoutes;
