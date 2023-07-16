@@ -1,7 +1,7 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
-const UserLayout = () => {
+const StationLayout = () => {
   return (
     <>
       <Outlet/>
@@ -9,4 +9,4 @@ const UserLayout = () => {
   )
 }
 
-export default UserLayout
+export default StationLayout

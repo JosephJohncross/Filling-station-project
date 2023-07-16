@@ -48,8 +48,18 @@
   /* Admin dashboard */
   .admin__layout {
     display: grid;
-    grid-template-columns: 300px 1fr;
+    grid-template-columns: 1fr;
     grid-template-rows: max-content 1fr;
+  }
+  @media (min-width: 700px) {
+    .admin__layout {
+      grid-template-columns: 250px 1fr;
+    }
+  }
+  @media (min-width: 800px) {
+    .admin__layout {
+      grid-template-columns: 300px 1fr;
+    }
   }
   /* Dashboard components */
   .amenity-input {
@@ -59,19 +69,18 @@
     -ms-appearance: none;
   }
   .amenity-input:checked {
-    @apply bg-primColor /* bg-green-500 */
+    @apply bg-primColor /* bg-green-500 */;
   }
 
   .amenity-input:checked ~ span:last-child {
     /* --tw-translate-x: 1.75rem;  */
     /* translate-x-7 */
-    @apply translate-x-7
+    @apply translate-x-7;
   }
-  .amenity-input ~ span:last-child{
-    @apply -translate-x-7
+  .amenity-input ~ span:last-child {
+    @apply -translate-x-7;
   }
   .amenity-input ~ .amenity-input:after {
     display: none;
   }
 }
-

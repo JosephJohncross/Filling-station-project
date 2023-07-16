@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import AnyChart from "anychart-react"
-import anychart from "anychart"
+import React, { useEffect, useState } from "react";
+import AnyChart from "anychart-react";
+import anychart from "anychart";
 
 const getData = () => {
   return [
@@ -20,32 +20,50 @@ const getData = () => {
 };
 
 const complexSettings = {
-    width: "50%",
-    height: 800,
-    type: 'column',
-    data: getData(),
-    title: '',
-    yAxis: [0, {
-    //   orientation: 'right',
+  width: "100%",
+  height: "300px",
+  type: "column",
+  data: getData(),
+  title: "",
+  yAxis: [
+    0,
+    {
+      //   orientation: 'right',
       enabled: true,
       labels: {
-        format: '{%Value}{decimalPoint:\\,}',
-        fontColor: 'red'
+        format: "{%Value}{decimalPoint:\\,}",
+        fontColor: "red",
       },
-      
-    }],
-    legend: false,
-    color: "#FFF"
-    
-  };
+    },
+  ],
+  legend: false,
+  color: "#FFF",
+};
 
-const Histogram = ({data}) => {
-  
-  return (
-    <>
-        <AnyChart {...complexSettings}/>
-    </>
-  )
+const Histogram = ({ timeout, keyProp }) => {
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShouldRender(true);
+
+      return () => clearTimeout(timer);
+    }, timeout);
+  }, []);
+
+  const chartData = getData();
+  const chartSettings = { ...complexSettings };
+
+  return shouldRender ? (
+    <ChartContainer chartData={chartData} chartSettings={chartSettings} />
+  ) : null;
+
+  // return shouldRender ? <AnyChart {...complexSettings} /> : null;
+};
+
+// Chart container
+const ChartContainer = ({ chartData, chartSettings }) => {
+  return <AnyChart {...chartSettings} data={chartData} />;
 };
 
 export default Histogram;

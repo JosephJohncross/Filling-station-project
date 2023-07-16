@@ -9,7 +9,7 @@ const ButtonCapsule = ({ text, Icon, active, patch, actionType }) => {
           : "bg-[#F6F6F6] text-[#1B1B1B] border border-transparent"
       }`}
       onClick={()=> {
-        console.log(patch)
+        // console.log(patch)
         patch({type: actionType})
       }}
     //   style={{borderBottomLeftRadius: "50px"}}

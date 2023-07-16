@@ -6,9 +6,9 @@ import SignUp from "../Component/Accounts/SignUp";
 import StationSignUp from "../Component/Accounts/StationSignUp";
 import CustomerSignUp from "../Component/Accounts/CustomerSignUp";
 import UserDashboard from "../Component/Dashboard/UserDashboard/UserDashboard";
-import StaffDashboard from "../Component/Dashboard/StaffAdminDashboard.jsx/StaffDashboard";
 import AdminDashboard from "../Component/Dashboard/AdminDashboard/AdminDashboard";
 import StationPage from "../Pages/StationPage";
+import SuperAdminDashboard from "../Component/Dashboard/SuperAdminDashboard.jsx/SuperAdminDashboard";
 
 export const CustomRoutes = () => {
   return [
@@ -22,18 +22,12 @@ export const CustomRoutes = () => {
     <Route path="station" element={<StationPage />} />,
 
     // User route
-    <Route path="/" element={<PrivateRoutes roles={"1"} />}>
-      <Route path="user/dashboard" element={<UserDashboard />} />,
-    </Route>,
+    <Route path="user/dashboard" element={<PrivateRoutes />} />,
 
     // station admin
-    <Route path="/" element={<PrivateRoutes roles={"2"} />}>
-      <Route path="staff/dashboard" element={<StaffDashboard />} />,
-    </Route>,
+    <Route path="station/dashboard" element={<PrivateRoutes />} />,
 
     // Admin Routes
-    <Route path="/" element={<PrivateRoutes roles={"3"} />}>
-      <Route path="admin/dashboard" element={<AdminDashboard />} />,
-    </Route>,
+    <Route path="admin/dashboard" element={<PrivateRoutes />} />,
   ];
 };

@@ -41,8 +41,8 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <section className="bg-gray-100/30 h-screen overflow-hidden w-screen">
-        <div className="grid admin__layout h-full w-full">
+      <section className="bg-gray-100/30 mini:h-screen overflow-hidden w-screen">
+        <div className="ipad:grid admin__layout h-full w-full">
           {/* Logo */}
           <div className="py-5 bg-white flex justify-center items-center  ">
             <img src={logo} alt="logo" className="w-20" />
@@ -55,7 +55,7 @@ const AdminDashboard = () => {
           </div>
 
           {/* Side navigation */}
-          <div className="bg-white  pt-12">
+          <div className="bg-white  pt-12 hidden ipad:block">
             {/* Filling station  */}
             <div className="px-3 mb-16">
               <div className=" bg-[#F6F6F6] text-[#1B1B1B] border border-transparent w-full transition-colors rounded-tr-full rounded-br-full rounded-bl-lg pl-4 py-4 flex space-x-3 items-center cursor-point">
@@ -64,7 +64,7 @@ const AdminDashboard = () => {
               </div>
             </div>
             {/* Navigation */}
-            <div className="mini:px-7 flex flex-col gap-y-10">
+            <div className="ipad:px-8 mini:px-10 flex flex-col gap-y-10">
               <ButtonCapsule
                 Icon={dashboardIcon}
                 active={state.activeTab === "dash" ? true : false}
@@ -86,12 +86,20 @@ const AdminDashboard = () => {
                 patch={dispatch}
                 actionType={"switchProfile"}
               />
+              {/* Logout button */}
+              <button
+                className={`focus:outline-[#384AAD] w-full pt-5 transition-colors bg-primColor hover:bg-primColor/80 duration-300 rounded-tr-full rounded-br-full pl-4 py-4 flex space-x-3 items-center cursor-pointer `}
+                onClick={() => {}}
+              >
+                <img src={"/logout.svg"} alt="" />
+                <p className="font-semibold font-open text-white">Logout</p>
+              </button>
             </div>
           </div>
 
           {/* Main body */}
           <div className="shadow-[inset_10px_0_10px_0px_rgba(0,0,0,.09)] mini:pl-5 mini:pt-5">
-            <div className="bg-white w-full h-[85vh] overflow-y-auto dashboard_scroll mb-10">
+            <div className="bg-white w-full ipad:h-[85vh] ipad:overflow-y-auto ipad:dashboard_scroll mb-10">
               <div className="dashboard_limiter mt-7">
                 <div className="flex justify-between items-center">
                   {/* Welcome text */}
@@ -124,7 +132,7 @@ const AdminDashboard = () => {
                 <>
                   <div className="dashboard_limiter my-5">
                     {/* Dashboard cards */}
-                    <div className="grid mini:grid-cols-4 ipad:grid-cols-3 grid-cols-2 mt-12 ipad:gap-y-3 ipad:gap-x-6">
+                    <div className="grid mini:grid-cols-4 ipad:grid-cols-3 grid-cols-2 mt-12 gap-y-4 gap-x-3 ipad:gap-y-3 ipad:gap-x-6">
                       {/* <DashboardCard
                         icon={"/clicks.svg"}
                         info={"Total Clicks"}
@@ -195,7 +203,7 @@ const AdminDashboard = () => {
                       </div>
                     </div>
                     {/* Chart */}
-                    <div className="pt-10">
+                    <div className="pt-10 border border-black mt-14 mini:mt-16 mini:w-1/2">
                       <Histogram />
                     </div>
                   </div>
@@ -204,9 +212,9 @@ const AdminDashboard = () => {
               {/* Make Updates */}
               {state.activeTab === "up" && (
                 <>
-                  <form className="dashboard_limiter mt-8 flex justify-between mini:gap-x-16">
+                  <form className="dashboard_limiter mt-8 flex flex-col gap-y-9 mini:flex-row mini:justify-between mini:gap-x-16">
                     {/* Fuel Product update */}
-                    <div className="mini:w-1/2 shadow-rounded-md mini:px-7 pt-6">
+                    <div className="mini:w-1/2 rounded-lg px-5 shadow-rounded-md mini:px-7 pt-6">
                       <h3 className="font-pt text-lg mb-8">Fuel Product</h3>
                       {/* Petrol input */}
                       <div className="space-y-2 mb-7">
@@ -254,7 +262,7 @@ const AdminDashboard = () => {
                       </div>
                     </div>
                     {/* Station amenities update */}
-                    <div className="mini:w-1/2 h-max shadow-rounded-md mini:px-7 py-6">
+                    <div className="mini:w-1/2 rounded-lg px-5 h-max shadow-rounded-md mini:px-7 py-6">
                       <h3 className="font-pt text-lg mb-8">
                         Station Amenities
                       </h3>
@@ -305,9 +313,9 @@ const AdminDashboard = () => {
               {state.activeTab === "prof" && (
                 <>
                   <div className="dashboard_limiter mt-8 flex justify-between mini:gap-x-16">
-                    <div className="shadow-rounded-md w-full flex md:gap-x-4 mini:py-16 mini:px-12">
+                    <div className="shadow-rounded-md w-full flex-col flex space-y-12 md:gap-x-4 mini:flex-row px-5 py-8 ipad:py-10 ipad:px-8 mini:py-16 mini:px-12">
                       {/* Left flex */}
-                      <div className="flex flex-col items-center mini:w-1/2 border-r-2 ">
+                      <div className="w-full flex flex-col items-center mini:w-1/2 mini:border-r-2 ">
                         {/* Image field */}
                         <div className="flex items-center justify-center w-full">
                           <label
@@ -344,8 +352,8 @@ const AdminDashboard = () => {
                         </p>
                       </div>
                       {/* Right flex */}
-                      <div className="mini:w-1/2 mini:pl-4">
-                        <h3 className="text-lg font-pt text-[#1B1B1B]">
+                      <div className="w-full mini:w-1/2 mini:pl-4">
+                        <h3 className="text-lg font-pt text-[#1B1B1B] text-center mini:text-left">
                           Update profile
                         </h3>
                         {/* Input fields */}
@@ -418,7 +426,9 @@ const AdminDashboard = () => {
                                 e.preventDefault();
                               }}
                             >
-                              <p className="font-semibold font-open">Save Changes</p>
+                              <p className="font-semibold font-open">
+                                Save Changes
+                              </p>
                             </button>
                           </div>
                         </div>

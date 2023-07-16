@@ -1,12 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.{html,js,jsx}"],
+  content: ["./src/**/*.{html,js,jsx}",'node_modules/preline/dist/*.js', "./node_modules/tw-elements/dist/js/**/*.js",],
   theme: {
     extend: {
       colors: {
         primColor: "#384AAD",
         secColor: "#FAD284",
-        textColor: "#1B1B1B"
+        textColor: "#1B1B1B",
+        dashboardAsh: "#F8F8F8",
+        highlightBlue: "#384AAD26"
       },
       fontFamily: {
         open: ["'Open Sans'", "sans-serif"],
@@ -29,5 +31,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [require('preline/plugin'), require("tw-elements/dist/plugin.cjs"), require('flowbite/plugin')],
 };

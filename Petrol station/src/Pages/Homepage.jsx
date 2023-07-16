@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 const { VITE_USERNAME, VITE_STYLE_ID, VITE_ACCESS_TOKEN } = import.meta.env;
 
 // image import
@@ -8,6 +8,7 @@ import houseListing from "../../src/assets/images/house-listing.jpg";
 import search from "../assets/images/search.svg";
 import mylocation from "../assets/images/mylocation.svg";
 import filter from "../assets/images/filter.svg";
+
 
 // React Spinner
 import FadeLoader from "react-spinners/FadeLoader";
@@ -30,12 +31,14 @@ import { Icon } from "leaflet";
 import DefaultHeader from "../Layout/DefaultHeader";
 import StationSearchCard from "../Component/Station/StationSearchCard";
 import { Link } from "react-router-dom";
+import AuthContext from "../Context/AuthContext";
 
 const Homepage = () => {
   const [latitude, setLatitude] = useState(51.505);
   const [longitude, setLongitude] = useState(-0.09);
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(false);
+  let {user} = useContext(AuthContext)
 
   const petrolIcon = new Icon({
     iconUrl: "/src/assets/images/mapicons/petrol-station.png",
@@ -73,8 +76,9 @@ const Homepage = () => {
               <DefaultHeader page="home" />
             </div>
             <div className="container w-full mini:w-[40rem] px-5 sm:px-6 ipad:px-8 desktop:px-10 mt-14 ">
-              <div className="max-w-xl shadow-rounded-xl">
-                {/* Upper filter */}
+              {/* <div className="max-w-xl shadow-rounded-xl">
+               
+                Upper filter
                 <div className="bg-primColor px-6 py-4 rounded-tr-md rounded-tl-md ">
                   <div className="flex items-center space-x-3 justify-between">
                     <img
@@ -102,13 +106,7 @@ const Homepage = () => {
                         className="block placeholder:text-white/50 placeholder:font-medium py-2 px-0 w-full mini:min-w-[400px] text-sm bg-transparent border-0 border-gray-300 appearance-none text-white dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 peer"
                         placeholder="Search by Location, Town, Filling Station or Brand"
                         onChange={() => {}}
-                      />
-                      {/* <label
-                        for="default_standard"
-                        class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                      >
-                        Default standard
-                      </label> */}
+                      />        
                     </div>
                     <img
                       src={search}
@@ -119,7 +117,9 @@ const Homepage = () => {
                   </div>
                   <div className="w-full h-[0.05rem] rounded-md bg-white"></div>
                 </div>
-                {/* Lower filter */}
+
+
+                Lower filter
                 <div className="bg-white px-6 py-4 flex justify-end items-center">
                   <div className="flex items-center  space-x-2">
                     <p className="text-primColor font-semibold text-sm">
@@ -128,9 +128,12 @@ const Homepage = () => {
                     <img src={filter} alt="" className="cursor-pointer" />
                   </div>
                 </div>
+              </div> */}
+              <div className="bg-primColor px-6 py-4 rounded-tr-md rounded-tl-md text-white font-semibold font-pt">
+                Filling stations by lowest petrol prices
               </div>
               {/* Filling station filter */}
-              <div className="max-w-xl mt-5 h-[60vh] overflow-y-auto flex flex-col gap-y-4 dashboard_scroll">
+              <div className="max-w-xl mt-5 h-[70vh] overflow-y-auto flex flex-col gap-y-4 dashboard_scroll">
                 <StationSearchCard
                   address={"Opposite Timber market Mbierebe."}
                   dieselPrice={""}
@@ -195,7 +198,7 @@ const Homepage = () => {
                       className="w-full h-28"
                     />
                     <p className=""></p>
-                    <Link to={"/station"}>
+                    <Link to={user ? "/station" : "login"}>
                       <button className="w-full text-white rounded-full px-3 py-2 bg-sky-400 hover:bg-sky-500 font-medium">
                         Visit
                       </button>
