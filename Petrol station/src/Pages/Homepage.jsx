@@ -9,7 +9,6 @@ import search from "../assets/images/search.svg";
 import mylocation from "../assets/images/mylocation.svg";
 import filter from "../assets/images/filter.svg";
 
-
 // React Spinner
 import FadeLoader from "react-spinners/FadeLoader";
 //Spinner styling
@@ -38,7 +37,7 @@ const Homepage = () => {
   const [longitude, setLongitude] = useState(-0.09);
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(false);
-  let {user} = useContext(AuthContext)
+  let { user } = useContext(AuthContext);
 
   const petrolIcon = new Icon({
     iconUrl: "/src/assets/images/mapicons/petrol-station.png",
@@ -75,7 +74,70 @@ const Homepage = () => {
             <div className="container_limiter pt-3">
               <DefaultHeader page="home" />
             </div>
-            <div className="container w-full mini:w-[40rem] px-5 sm:px-6 ipad:px-8 desktop:px-10 mt-14 ">
+            <div className="mini:container w-full  mini:w-[40rem] px-5 sm:px-6 ipad:px-8 desktop:px-10 mt-14 ">
+              {/* Dropdown for filling station */}
+              <div class="hs-dropdown relative inline-flex">
+                {/* Drop down button */}
+                <button
+                  id="hs-dropdown-custom-icon-trigger"
+                  type="button"
+                  class="hs-dropdown-toggle p-3 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800"
+                >
+                  <svg
+                    class="w-4 h-4 text-gray-600"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                  </svg>
+                </button>
+
+                <div
+                  class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden rounded-lg mt-2 w-full mini:w-max mx-3 mini:mx-0"
+                  aria-labelledby="hs-dropdown-custom-icon-trigger"
+                >
+                  <div className="bg-primColor px-6 py-4 rounded-tr-md rounded-tl-md text-white font-semibold font-pt">
+                    Filling stations by lowest petrol prices
+                  </div>
+                  {/* Filling station filter */}
+                  <div className="max-w-xl mt-5 h-[70vh] overflow-y-auto flex flex-col gap-y-4 dashboard_scroll">
+                    <StationSearchCard
+                      address={"Opposite Timber market Mbierebe."}
+                      dieselPrice={""}
+                      distance={"1.1 mi"}
+                      kerosinePrice={""}
+                      name={"Earthwell Filling Station"}
+                      openingTime={"8am-9pm"}
+                      petrolPrice={""}
+                      rating={"4"}
+                    />
+                    <StationSearchCard
+                      address={"Opposite Timber market Mbierebe."}
+                      dieselPrice={""}
+                      distance={"1.1 mi"}
+                      kerosinePrice={""}
+                      name={"Earthwell Filling Station"}
+                      openingTime={"8am-9pm"}
+                      petrolPrice={""}
+                      rating={"4"}
+                    />
+                    <StationSearchCard
+                      address={"Opposite Timber market Mbierebe."}
+                      dieselPrice={""}
+                      distance={"1.1 mi"}
+                      kerosinePrice={""}
+                      name={"Earthwell Filling Station"}
+                      openingTime={"8am-9pm"}
+                      petrolPrice={""}
+                      rating={"4"}
+                    />
+                  </div>
+                </div>
+              </div>
+
               {/* <div className="max-w-xl shadow-rounded-xl">
                
                 Upper filter
@@ -129,42 +191,6 @@ const Homepage = () => {
                   </div>
                 </div>
               </div> */}
-              <div className="bg-primColor px-6 py-4 rounded-tr-md rounded-tl-md text-white font-semibold font-pt">
-                Filling stations by lowest petrol prices
-              </div>
-              {/* Filling station filter */}
-              <div className="max-w-xl mt-5 h-[70vh] overflow-y-auto flex flex-col gap-y-4 dashboard_scroll">
-                <StationSearchCard
-                  address={"Opposite Timber market Mbierebe."}
-                  dieselPrice={""}
-                  distance={"1.1 mi"}
-                  kerosinePrice={""}
-                  name={"Earthwell Filling Station"}
-                  openingTime={"8am-9pm"}
-                  petrolPrice={""}
-                  rating={"4"}
-                />
-                <StationSearchCard
-                  address={"Opposite Timber market Mbierebe."}
-                  dieselPrice={""}
-                  distance={"1.1 mi"}
-                  kerosinePrice={""}
-                  name={"Earthwell Filling Station"}
-                  openingTime={"8am-9pm"}
-                  petrolPrice={""}
-                  rating={"4"}
-                />
-                <StationSearchCard
-                  address={"Opposite Timber market Mbierebe."}
-                  dieselPrice={""}
-                  distance={"1.1 mi"}
-                  kerosinePrice={""}
-                  name={"Earthwell Filling Station"}
-                  openingTime={"8am-9pm"}
-                  petrolPrice={""}
-                  rating={"4"}
-                />
-              </div>
             </div>
           </div>
           <div className="map-scroll rounded-lg h-screen ">

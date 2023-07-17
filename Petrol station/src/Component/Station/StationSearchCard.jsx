@@ -22,7 +22,7 @@ const StationSearchCard = ({
 }) => {
   return (
     <div
-      className="w-full p-6 flex bg-white font-open shadow-rounded-xl rounded-lg hover:bg-gray-100/80 transition-colors duration-200"
+      className="w-full p-6 flex flex-col mini:flex-row gap-y-5 mini:gap-y-0 bg-white font-open shadow-rounded-xl rounded-lg hover:bg-gray-100/80 transition-colors duration-200"
       onClick={() => {}}
     >
       {/* Left side */}
@@ -68,7 +68,7 @@ const StationSearchCard = ({
         </Link>
       </div>
       {/* Right side */}
-      <div className=" w-full mini:w-1/3 flex justify-end items-center">
+      <div className=" w-full mini:w-1/3 flex ipad:justify-end items-center">
         <PriceCard
           diesel={dieselPrice}
           kerosene={kerosinePrice}

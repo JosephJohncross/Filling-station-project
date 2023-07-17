@@ -1,10 +1,9 @@
 import React from "react";
 
-
 // image import
-import directionIcon from "../../assets/images/directionIcon.svg"
+import directionIcon from "../../assets/images/directionIcon.svg";
 
-const Button = ({ shade, content, icon, clickFunction}) => {
+const Button = ({ shade, content, icon, clickFunction }) => {
   const buttonStyle = (shade) => {
     var classStyle = "";
 
@@ -26,13 +25,17 @@ const Button = ({ shade, content, icon, clickFunction}) => {
   };
 
   return (
-    <button className={buttonStyle(shade)} onClick={()=>{
-      clickFunction ? clickFunction() : ""
-    }}>
+    <button
+      className={buttonStyle(shade)}
+      onClick={(e) => {
+        // e.preventDefault()
+        clickFunction ? clickFunction(e) : "";
+      }}
+    >
       {icon ? (
         <div className="flex justify-center items-center space-x-3">
           <span>{content}</span>
-          <img src={directionIcon} alt=""/>
+          <img src={directionIcon} alt="" />
         </div>
       ) : (
         <>{content}</>
