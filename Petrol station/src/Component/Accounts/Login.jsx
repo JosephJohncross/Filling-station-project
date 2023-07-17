@@ -2,6 +2,7 @@ import React from "react";
 import leftsvg from "../../assets/images/unsplash.svg";
 import logo from "../../../src/assets/images/logo.svg";
 import { Link } from "react-router-dom";
+import Button from "../Common/Button";
 const Login = () => {
   const LeftPage = {
     backgroundImage: `url(${leftsvg})`,
@@ -14,18 +15,18 @@ const Login = () => {
     borderRadius: "0.25rem",
   };
   return (
-    <div className="h-screen overflow-hidden">
-      <div className="h-full flex flex-row">
+    <div className="md:h-screen overflow-hidden">
+      <div className="md:h-full flex flex-col md:flex-row font-open">
         {/* left page */}
         <div
-          className="left h-full md:w-1/3 w-full flex flex-col px-8 gap-8 justify-center"
+          className="left h-full md:w-1/3 w-full flex flex-col px-8 gap-8 pt-12 md:pt-0 md:justify-center"
           style={LeftPage}
         >
-          <img className="w-48" src={logo} alt="logo" />
+          <img className="w-48" src="/logo.svg" alt="logo" />
           <h1 className="text-3xl text-white font-pt font-bold">
             Uyo Fuel Inform tells you all you need to know on
           </h1>
-          <ul className="text-sm text-white flex flex-col gap-4">
+          <ul className="text-sm text-white flex flex-col gap-2">
             <li>The Availability of Fuel in Filling Stations around you</li>
             <li>The Price of Fuel in each Filling Station</li>
             <li>The Distance of the Fuel Station from you</li>
@@ -33,38 +34,96 @@ const Login = () => {
             <li>Fuel Insights</li>
             <li>and many more...</li>
           </ul>
+          <div className="md:hidden mt-10 bg-[#E8EAF5] rounded-lg my-4 py-4 px-4">
+            <p className="text-center font-pt text-xl">Sign in</p>
+            <div className="flex flex-col pt-5">
+              {/* Name */}
+              <div class="relative mb-5">
+                <input
+                  type="text"
+                  id="floating_outlined"
+                  class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-500 appearance-none  dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                />
+                <label
+                  for="floating_outlined"
+                  class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#E8EAF5] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+                >
+                  Name
+                </label>
+              </div>
+              <div class="relative mb-5">
+                <input
+                  type="text"
+                  id="floating_outlined"
+                  class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-500 appearance-none  dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                />
+                <label
+                  for="floating_outlined"
+                  class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#E8EAF5] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+                >
+                  Email/Phone Number
+                </label>
+              </div>
+              <div class="relative mb-3">
+                <input
+                  type="text"
+                  id="floating_outlined"
+                  class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-500 appearance-none  dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                />
+                <label
+                  for="floating_outlined"
+                  class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#E8EAF5] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+                >
+                  Password
+                </label>
+              </div>
+              <span className="text-end text-xs font-medium mb-6"><p>Forgot password?</p></span>
+              <Button
+                shade={"blue"}
+                content={"Login"}
+              />
+              <span className="text-center text-xs mt-4 mb-8">Not a member?<Link to={"/signup"} className="text-base font-pt inline text-primColor"> Sign Up</Link></span>
+            </div>
+          </div>
         </div>
         {/* Right Side */}
-        <div className="right w-2/3 hidden md:block flex flex-col justify-center px-24">
-          <h1 className="text-3xl font-bold">Sign in</h1>
-          <form className="my-5 grid gap-7">
-            <label className="block w-3/5">
-              <span className="block text-sm font-medium text-slate-700">
-                Email/Phone number
-              </span>
-              <input
-                type="email"
-                name="email"
-                className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
-              />
-            </label>
-            <label className="block w-3/5">
-              <span className="block text-sm font-medium text-slate-700">
-                Password
-              </span>
-              <input
-                type="password"
-                name="password"
-                className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
-              />
-            </label>
-            <div className="flex flex-col gap-1">
-              <Link to="/login">Forgotten Password?</Link>
-              <button className="w-1/5" style={buttonStyle}>
-                Login
-              </button>
-            </div>
-          </form>
+        <div className="right md:w-2/3 hidden md:flex items-center bg-[#E8EAF5]">
+          <div className="md:block flex flex-col justify-center px-24 w-full">
+            <h1 className="text-5xl font-bold font-pt">Sign in</h1>
+            <form className="my-7 ">
+              <label className="block w-full md:w-3/5">
+                <span className="block text-base font-semibold font-pt pt-6 text-slate-700">
+                  Email/Phone number
+                </span>
+                <input
+                  type="email"
+                  name="email"
+                  className="mt-1 px-3 py-2 bg-transparent border shadow-sm border-slate-500 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+                />
+              </label>
+              <label className="block w-full md:w-3/5">
+                <span className="block text-base font-semibold font-pt pt-6 text-slate-700">
+                  Password
+                </span>
+                <input
+                  type="password"
+                  name="password"
+                  className="mt-1 px-3 py-2 bg-transparent border shadow-sm border-slate-500 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+                />
+              </label>
+              <div className="flex flex-col gap-1 pt-6">
+                <Link to="/login" className="text-sm font-open pb-3">
+                  Forgotten Password?
+                </Link>
+                <button className="w-1/5 pt-7" style={buttonStyle}>
+                  Login
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
