@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../Common/Button";
 import { useImmerReducer } from "use-immer";
 import StationSearchCard from "../../Station/StationSearchCard";
 import Avatar from "./Avatar";
 import Drawer from "../../Common/Drawer";
+import AuthContext from "../../../Context/AuthContext";
 
 const reducerFunction = (draft, action) => {
   switch (action.type) {
@@ -25,6 +26,7 @@ const initialState = {
 
 const UserDashboard = () => {
   const [state, dispatch] = useImmerReducer(reducerFunction, initialState);
+  const { logoutUser } = useContext(AuthContext);
 
   return (
     <section className="">
@@ -115,7 +117,9 @@ const UserDashboard = () => {
                 {/* Logout */}
                 <button
                   className="rounded-md px-6 py-2 font-semibold font-pt text-base focus:outline-red-500 w-full  text-[#F2F2F2] bg-red-600 shadow-md hover:bg-red-500 hover:shadow-sm flex justify-center items-center"
-                  onClick={() => {}}
+                  onClick={() => {
+                    logoutUser()
+                  }}
                 >
                   Logout
                 </button>
@@ -407,29 +411,36 @@ const UserDashboard = () => {
           </div>
         </>
       )}
-      {
-        state.activePage === "notif" && (
-          <>
-            <div className="flex flex-col gap-y-5 py-9 px-4">
-              {/* Notify 1 */}
-              <div className="shadow-rounded-md px-4 py-3 font-open flex items-center space-x-3">
-                <span className="w-2 h-2 rounded-full  bg-green-400 block"></span>
-                <p>Lorrem ipsum dolor sit amet tu pur seit gi reuthi no berninue sae</p>                
-              </div>
-               {/* Notify 2 */}
-               <div className="shadow-rounded-md px-4 py-3 font-open flex items-center space-x-3">
-                <span className="w-2 h-2 rounded-full  bg-green-400 block"></span>
-                <p>Lorrem ipsum dolor sit amet tu pur seit gi reuthi no berninue sae</p>                
-              </div>
-              {/* Notify 3 */}
-              <div className="shadow-rounded-md px-4 py-3 font-open flex items-center space-x-3">
-                <span className="w-2 h-2 rounded-full  bg-green-400 block"></span>
-                <p>Lorrem ipsum dolor sit amet tu pur seit gi reuthi no berninue sae</p>                
-              </div>
+      {state.activePage === "notif" && (
+        <>
+          <div className="flex flex-col gap-y-5 py-9 px-4">
+            {/* Notify 1 */}
+            <div className="shadow-rounded-md px-4 py-3 font-open flex items-center space-x-3">
+              <span className="w-2 h-2 rounded-full  bg-green-400 block"></span>
+              <p>
+                Lorrem ipsum dolor sit amet tu pur seit gi reuthi no berninue
+                sae
+              </p>
             </div>
-          </>
-        )
-      }
+            {/* Notify 2 */}
+            <div className="shadow-rounded-md px-4 py-3 font-open flex items-center space-x-3">
+              <span className="w-2 h-2 rounded-full  bg-green-400 block"></span>
+              <p>
+                Lorrem ipsum dolor sit amet tu pur seit gi reuthi no berninue
+                sae
+              </p>
+            </div>
+            {/* Notify 3 */}
+            <div className="shadow-rounded-md px-4 py-3 font-open flex items-center space-x-3">
+              <span className="w-2 h-2 rounded-full  bg-green-400 block"></span>
+              <p>
+                Lorrem ipsum dolor sit amet tu pur seit gi reuthi no berninue
+                sae
+              </p>
+            </div>
+          </div>
+        </>
+      )}
     </section>
   );
 };

@@ -224,7 +224,7 @@ const Homepage = () => {
                       className="w-full h-28"
                     />
                     <p className=""></p>
-                    <Link to={user ? "/station" : "login"}>
+                    <Link to={user ? "/login" : "login"}>
                       <button className="w-full text-white rounded-full px-3 py-2 bg-sky-400 hover:bg-sky-500 font-medium">
                         Visit
                       </button>
@@ -247,7 +247,7 @@ const Homepage = () => {
                       className="w-full h-28"
                     />
                     <p className=""></p>
-                    <Link to={"/station"}>
+                    <Link to={"/login"}>
                       <button className="w-full text-white rounded-full px-3 py-2 bg-sky-400 hover:bg-sky-500 font-medium">
                         Visit
                       </button>
