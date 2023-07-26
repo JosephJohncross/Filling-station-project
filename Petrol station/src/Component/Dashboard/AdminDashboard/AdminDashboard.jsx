@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useImmerReducer } from "use-immer";
 import ButtonCapsule from "./ButtonCapsule";
-import DashboardCard from "./DashboardCard";
+import AuthContext from "../../../Context/AuthContext";
 
 // Reducer function
 const reducerFunction = (draft, action) => {
@@ -38,6 +38,7 @@ import StationAmenities from "./StationAmenities";
 
 const AdminDashboard = () => {
   const [state, dispatch] = useImmerReducer(reducerFunction, initialState);
+  const { logoutUser } = useContext(AuthContext);
 
   return (
     <>
@@ -89,7 +90,10 @@ const AdminDashboard = () => {
               {/* Logout button */}
               <button
                 className={`focus:outline-[#384AAD] w-full pt-5 transition-colors bg-primColor hover:bg-primColor/80 duration-300 rounded-tr-full rounded-br-full pl-4 py-4 flex space-x-3 items-center cursor-pointer `}
-                onClick={() => {}}
+                onClick={(e) => {
+                  e.preventDefault();
+                  logoutUser();
+                }}
               >
                 <img src={"/logout.svg"} alt="" />
                 <p className="font-semibold font-open text-white">Logout</p>

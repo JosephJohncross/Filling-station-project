@@ -1,9 +1,44 @@
-import React from "react";
-import leftsvg from "../../assets/images/unsplash.svg";
+import React, { useContext } from "react";
 import logo from "../../../src/assets/images/logo.svg";
+import leftsvg from "../../assets/images/unsplash.svg";
+import { useImmerReducer } from "use-immer";
+import AuthContext from "../../Context/AuthContext";
+
 import { Link } from "react-router-dom";
 import Button from "../Common/Button";
+import { displayNotifications } from "../../Services/helper";
+
+const reducerFunction = (draft, action) => {
+  switch (action.type) {
+    case "changedEmail":
+      console.log(action.email);
+      draft.error.email = action.error;
+      draft.email = action.email;
+      break;
+    case "changedPassword":
+      console.log(action.password);
+      draft.error.password = action.error;
+      draft.password = action.password;
+      break;
+    case "error":
+      draft.error.general = action.error;
+  }
+};
+
+const initialState = {
+  email: "",
+  password: "",
+  error: {
+    email: "",
+    password: "",
+    general: "",
+  },
+};
+
 const Login = () => {
+  let { loginUser } = useContext(AuthContext);
+  const [state, dispatch] = useImmerReducer(reducerFunction, initialState);
+
   const LeftPage = {
     backgroundImage: `url(${leftsvg})`,
   };
@@ -14,6 +49,13 @@ const Login = () => {
     padding: "0.5rem 1rem",
     borderRadius: "0.25rem",
   };
+
+  const submitForm = async (e) => {
+    e.preventDefault();
+    let loginResponse = await loginUser(e);
+    displayNotifications(loginResponse)
+  };
+
   return (
     <div className="md:h-screen overflow-hidden">
       <div className="md:h-full flex flex-col md:flex-row font-open">
@@ -41,12 +83,12 @@ const Login = () => {
               <div class="relative mb-5">
                 <input
                   type="text"
-                  id="floating_outlined"
+                  id="name"
                   class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-500 appearance-none  dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
                 />
                 <label
-                  for="floating_outlined"
+                  htmlFor="name"
                   class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#E8EAF5] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
                 >
                   Name
@@ -55,12 +97,12 @@ const Login = () => {
               <div class="relative mb-5">
                 <input
                   type="text"
-                  id="floating_outlined"
+                  id="email"
                   class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-500 appearance-none  dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
                 />
                 <label
-                  for="floating_outlined"
+                  htmlFor="email"
                   class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#E8EAF5] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
                 >
                   Email/Phone Number
@@ -69,23 +111,31 @@ const Login = () => {
               <div class="relative mb-3">
                 <input
                   type="text"
-                  id="floating_outlined"
+                  id="password"
                   class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-500 appearance-none  dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
                 />
                 <label
-                  for="floating_outlined"
+                  htmlFor="password"
                   class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#E8EAF5] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
                 >
                   Password
                 </label>
               </div>
-              <span className="text-end text-xs font-medium mb-6"><p>Forgot password?</p></span>
-              <Button
-                shade={"blue"}
-                content={"Login"}
-              />
-              <span className="text-center text-xs mt-4 mb-8">Not a member?<Link to={"/signup"} className="text-base font-pt inline text-primColor"> Sign Up</Link></span>
+              <span className="text-end text-xs font-medium mb-6">
+                <p>Forgot password?</p>
+              </span>
+              <Button shade={"blue"} content={"Login"} />
+              <span className="text-center text-xs mt-4 mb-8">
+                Not a member?
+                <Link
+                  to={"/signup"}
+                  className="text-base font-pt inline text-primColor"
+                >
+                  {" "}
+                  Sign Up
+                </Link>
+              </span>
             </div>
           </div>
         </div>
@@ -93,16 +143,32 @@ const Login = () => {
         <div className="right md:w-2/3 hidden md:flex items-center bg-[#E8EAF5]">
           <div className="md:block flex flex-col justify-center px-24 w-full">
             <h1 className="text-5xl font-bold font-pt">Sign in</h1>
-            <form className="my-7 ">
+            <form
+              className="my-7 "
+              onSubmit={(e) => {
+                submitForm(e);
+              }}
+            >
               <label className="block w-full md:w-3/5">
                 <span className="block text-base font-semibold font-pt pt-6 text-slate-700">
-                  Email/Phone number
+                  Email
                 </span>
                 <input
                   type="email"
                   name="email"
                   className="mt-1 px-3 py-2 bg-transparent border shadow-sm border-slate-500 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+                  onChange={(e) => {
+                    dispatch({
+                      type: "changedEmail",
+                      email: e.target.value,
+                      error:
+                        e.target.value == "" ? "Email must not be blank" : "",
+                    });
+                  }}
                 />
+                <p className="text-xs text-red-600 py-2">
+                  {state.error.email ? state.error.email : ""}
+                </p>
               </label>
               <label className="block w-full md:w-3/5">
                 <span className="block text-base font-semibold font-pt pt-6 text-slate-700">
@@ -112,13 +178,32 @@ const Login = () => {
                   type="password"
                   name="password"
                   className="mt-1 px-3 py-2 bg-transparent border shadow-sm border-slate-500 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
+                  onChange={(e) => {
+                    dispatch({
+                      type: "changedPassword",
+                      password: e.target.value,
+                      error:
+                        e.target.value == ""
+                          ? "Password field must not be blank"
+                          : "",
+                    });
+                  }}
                 />
+                <p className="text-xs text-red-600 py-2">
+                  {state.error.password ? state.error.password : ""}
+                </p>
               </label>
               <div className="flex flex-col gap-1 pt-6">
                 <Link to="/login" className="text-sm font-open pb-3">
                   Forgotten Password?
                 </Link>
-                <button className="w-1/5 pt-7" style={buttonStyle}>
+                <button
+                  className="w-1/5 pt-7"
+                  style={buttonStyle}
+                  onSubmit={() => {
+                    submitForm();
+                  }}
+                >
                   Login
                 </button>
               </div>

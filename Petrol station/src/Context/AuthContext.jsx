@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from "react";
 // import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import { displayNotifications } from "../Services/helper";
 
 const AuthContext = createContext();
 
@@ -25,14 +26,13 @@ export const AuthProvider = ({ children }) => {
   //  Login user function
   let loginUser = async (e) => {
     e.preventDefault();
-    // console.log("Clicked");
     let response = await fetch("http://127.0.0.1:8000/api/token/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        staff_id: e.target.staff_id.value,
+        email: e.target.email.value,
         password: e.target.password.value,
       }),
     });
@@ -42,18 +42,23 @@ export const AuthProvider = ({ children }) => {
 
     if (response.status === 200) {
       setAuthTokens(data);
+      console.log(data);
       setUser(jwt_decode(data.access));
       localStorage.setItem("authTokens", JSON.stringify(data));
-      if (user?.role === 1) {
+      if (user?.role === 0) {
         navigate("/admin/dashboard");
+        return "Login successful";
+      } else if (user?.role === 1) {
+        navigate("/user/dashboard");
+        return "Login successful";
+        return;
       } else if (user?.role === 2) {
-        navigate("/admin/dashboard");
-      } else if (user?.role === 3) {
-        navigate("/staff/dashboard");
+        navigate("/station/dashboard");
+        return "Login successful"
       }
-    } else {
+    } else if (response.status === 401) {
       // Still handle error case
-      alert("Something went wrong");
+      displayNotifications("Invalid login credential");
     }
   };
 
@@ -62,7 +67,7 @@ export const AuthProvider = ({ children }) => {
     setAuthTokens(null);
     setUser(null);
     localStorage.removeItem("authTokens");
-    // navigate("/login")
+    navigate("/login")
   };
 
   // UpdateToken
@@ -98,23 +103,19 @@ export const AuthProvider = ({ children }) => {
     authTokens: authTokens,
   };
 
-  //   useEffect(()=> {
+  useEffect(() => {
+    if (loading && authTokens != null) {
+      updateToken();
+    }
 
-  //       if (loading && authTokens !=null){
-  //         updateToken()
-  //       }
-  //       // if (loading){
-  //       //   updateToken()
-  //       // }
-
-  //       let timeOut =  1000 * 60 * 4
-  //       let interval = setInterval(() => {
-  //         if (authTokens){
-  //           updateToken()
-  //         }
-  //       },  timeOut)
-  //       return ()=> clearInterval(interval)
-  //   }, [authTokens, loading])
+    let timeOut = 1000 * 60 * 4;
+    let interval = setInterval(() => {
+      if (authTokens) {
+        updateToken();
+      }
+    }, timeOut);
+    return () => clearInterval(interval);
+  }, [authTokens, loading]);
 
   return (
     // <AuthContext.Provider value={contextData}>{loading ? null : children}</AuthContext.Provider>

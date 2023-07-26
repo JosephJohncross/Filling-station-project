@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 let date = new Date();
 let day = date.getDate();
 let month = date.getMonth();
@@ -119,3 +121,10 @@ export const userDummyData = [
     email: "myemailaddress.com",
   },
 ];
+
+//Displays notification upon user action
+export const displayNotifications = (message) => {
+  notify(message);
+};
+//Service that handles notifcations
+const notify = (message) => toast(message);
