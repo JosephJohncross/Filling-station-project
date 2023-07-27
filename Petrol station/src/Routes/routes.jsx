@@ -9,7 +9,10 @@ import UserDashboard from "../Component/Dashboard/UserDashboard/UserDashboard";
 import AdminDashboard from "../Component/Dashboard/AdminDashboard/AdminDashboard";
 import StationPage from "../Pages/StationPage";
 import SuperAdminDashboard from "../Component/Dashboard/SuperAdminDashboard.jsx/SuperAdminDashboard";
+
 import Search from "../Pages/Search";
+
+import GeneralStationPage from "../Pages/GeneralStationPage";
 
 export const CustomRoutes = () => {
   return [
@@ -21,8 +24,6 @@ export const CustomRoutes = () => {
     <Route path="/stationsignup" element={<StationSignUp />} />,
     <Route path="/customersignup" element={<CustomerSignUp />} />,
     <Route path="station" element={<StationPage />} />,
-    <Route path="search" element={<Search />} />,
-
 
     // User route
     <Route path="user/dashboard" element={<PrivateRoutes />} />,
