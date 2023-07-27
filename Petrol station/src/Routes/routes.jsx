@@ -24,6 +24,8 @@ export const CustomRoutes = () => {
     <Route path="/stationsignup" element={<StationSignUp />} />,
     <Route path="/customersignup" element={<CustomerSignUp />} />,
     <Route path="station" element={<StationPage />} />,
+    <Route path="stations" element={<GeneralStationPage />} />,
+    <Route path="search" element={<Search />} />,
 
     // User route
     <Route path="user/dashboard" element={<PrivateRoutes />} />,
