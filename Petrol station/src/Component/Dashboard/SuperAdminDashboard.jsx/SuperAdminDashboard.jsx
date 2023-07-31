@@ -1,13 +1,23 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useContext } from "react";
 import { useImmerReducer } from "use-immer";
 import DashboardNavs from "./DashboardNavs";
 import AdminDashboardCard from "./AdminDashboardCard";
 import Badge from "./Badge";
-import { stationDummyData, userDummyData } from "../../../Services/helper";
+import {
+  stationDummyData,
+  userDummyData,
+  formatDate,
+} from "../../../Services/helper";
 import Button from "../../Common/Button";
 import Histogram from "../../Charts/Histogram";
 import FusinChart from "../../Charts/FusionCharts";
 import Drawer from "../../Common/Drawer";
+import {
+  createStation,
+  getAllStatiions,
+  getStatistics,
+} from "../../../Services/admin-request";
+import AuthContext from "../../../Context/AuthContext";
 
 const reducerFunction = (draft, action) => {
   switch (action.type) {
@@ -35,24 +45,59 @@ const reducerFunction = (draft, action) => {
     case "setStations":
       draft.stations = action.stations;
       break;
+    case "setVerifiedStations":
+      draft.verifiedStations = action.verified;
+      break;
+    case "setPendingStations":
+      draft.pendingVerification = action.pending;
+      break;
+    case "setStationName":
+      draft.stationName = action.name;
+      break;
+    case "setStationEmail":
+      draft.stationEmail = action.email;
+      break;
+    case "setStationLicense":
+      draft.stationLicense = action.license;
+      break;
+    case "setStationLongitude":
+      draft.stationLongitude = action.longitude;
+      break;
+    case "setStationLatitude":
+      draft.stationLatitude = action.latitude;
+      break;
+    case "setStationPassword":
+      draft.stationPassword = action.password;
+      break;
+    case "setStatistics":
+      draft.stats = action.stats;
+      break;
 
     // Account modal
     case "toggleAccount":
       draft.createStationModal = draft.val;
+      break;
+    case "triggerReload":
+      draft.forceReload = !draft.forceReload;
+      break;
   }
 };
 
 const initialState = {
   activeTab: "dash",
   activeBody: "dash",
-  stations: [...stationDummyData],
-  verifiedStations: [...stationDummyData].filter((station) => {
-    return station.verified === true;
-  }),
-  pendingVerification: [...stationDummyData].filter((station) => {
-    return station.verified === false;
-  }),
+  stations: [],
+  verifiedStations: [],
+  pendingVerification: [],
   users: [...userDummyData],
+  stationName: "",
+  stationEmail: "",
+  stationLicense: "",
+  stationLatitude: "",
+  stationLongitude: "",
+  stationPassword: "",
+  forceReload: false,
+  stats: null,
 };
 
 const SuperAdminDashboard = () => {
@@ -60,6 +105,35 @@ const SuperAdminDashboard = () => {
 
   // Refs
   const createModalRef = useRef();
+  const { logoutUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    getStatistics().then((data) => {
+      dispatch({ type: "setStatistics", stats: data });
+    });
+  }, []);
+  useEffect(() => {}, [state.forceReload]);
+
+  useEffect(() => {
+    if (state.activeBody === "allStations") {
+      getAllStatiions().then((data) => {
+        console.log("All stations" + " " + data);
+        dispatch({ type: "setStations", stations: data });
+        dispatch({
+          type: "setVerifiedStations",
+          verified: [...state.stations].filter((station) => {
+            return station.is_verified;
+          }),
+        });
+        dispatch({
+          type: "setVerifiedStations",
+          pending: [...state.stations].filter((station) => {
+            return station.is_verified;
+          }),
+        });
+      });
+    }
+  }, [state.activeBody]);
 
   return (
     <>
@@ -150,7 +224,9 @@ const SuperAdminDashboard = () => {
                 />
                 <button
                   className="rounded-md px-6 py-2 font-semibold font-pt text-base focus:outline-red-500 w-full  text-[#F2F2F2] bg-red-600 shadow-md hover:bg-red-500 hover:shadow-sm flex justify-center items-center"
-                  onClick={() => {}}
+                  onClick={() => {
+                    logoutUser();
+                  }}
                 >
                   Logout
                 </button>
@@ -162,7 +238,7 @@ const SuperAdminDashboard = () => {
           {/* Mobile version */}
           <div className="px-4 flex justify-between items-center mini:hidden shadow-md">
             <div className="flex items-center">
-              <Drawer/>
+              <Drawer />
               {/* logo */}
               <div className="py-5 bg-white mini:flex justify-center items-center">
                 <img src="/logo.svg" alt="logo" className="w-28" />
@@ -356,23 +432,24 @@ const SuperAdminDashboard = () => {
                     </div>
                     <AdminDashboardCard
                       icon={"/verified.svg"}
-                      quantity={"230"}
+                      quantity={state.stats?.verified_stations}
                       cardText={"Verified Stations"}
                     />
                     <AdminDashboardCard
                       icon={"/pending.svg"}
-                      quantity={"15"}
+                      quantity={state.stats?.pending_verification_stations}
                       cardText={"Pending Stations"}
                     />
                     <AdminDashboardCard
                       icon={"/cancelled.svg"}
-                      quantity={"210"}
+                      quantity={"0"}
                       cardText={"Canceled Stations"}
                     />
                   </div>
                 </>
               )}
 
+              {/* Create Station Account modal */}
               <div
                 id="hs-basic-modal"
                 class="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-hidden overflow-y-auto"
@@ -406,7 +483,12 @@ const SuperAdminDashboard = () => {
                       </button>
                     </div>
                     {/* Body */}
-                    <form className="mx-5 my-6 mini:grid  mini:gap-x-5 mini:gap-y-3 mini:grid-cols-2">
+                    <form
+                      className="mx-5 my-6 mini:grid  mini:gap-x-5 mini:gap-y-3 mini:grid-cols-2"
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                      }}
+                    >
                       {/* Filling station name */}
                       <div className="space-y-1">
                         <label
@@ -416,10 +498,83 @@ const SuperAdminDashboard = () => {
                           Filling Station Name
                         </label>
                         <input
+                          value={state.stationName}
                           id="petrol_price"
                           type="text"
                           name="petrol_price"
                           className="w-full outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 rounded-md p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                          onChange={(e) => {
+                            dispatch({
+                              type: "setStationName",
+                              name: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                      {/* Email address */}
+                      <div className="space-y-1">
+                        <label
+                          htmlFor="petrol_price"
+                          className="text-sm font-medium"
+                        >
+                          Email
+                        </label>
+                        <input
+                          value={state.stationEmail}
+                          id="petrol_price"
+                          type="text"
+                          name="petrol_price"
+                          className="w-full rounded-md outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                          onChange={(e) => {
+                            dispatch({
+                              type: "setStationEmail",
+                              email: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                      {/* Latitude */}
+                      <div className="space-y-1">
+                        <label
+                          htmlFor="petrol_price"
+                          className="text-sm font-medium"
+                        >
+                          Latitude
+                        </label>
+                        <input
+                          value={state.stationLatitude}
+                          id="petrol_price"
+                          type="text"
+                          name="petrol_price"
+                          className="w-full rounded-md outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                          onChange={(e) => {
+                            dispatch({
+                              type: "setStationLatitude",
+                              latitude: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                      {/* Longitude */}
+                      <div className="space-y-1">
+                        <label
+                          htmlFor="petrol_price"
+                          className="text-sm font-medium"
+                        >
+                          Longitude
+                        </label>
+                        <input
+                          value={state.stationLongitude}
+                          id="petrol_price"
+                          type="text"
+                          name="petrol_price"
+                          className="w-full rounded-md outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                          onChange={(e) => {
+                            dispatch({
+                              type: "setStationLongitude",
+                              longitude: e.target.value,
+                            });
+                          }}
                         />
                       </div>
                       {/* License Number */}
@@ -435,66 +590,34 @@ const SuperAdminDashboard = () => {
                           type="text"
                           name="petrol_price"
                           className="w-full outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 rounded-md p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                          onChange={(e) => {
+                            dispatch({
+                              type: "setStationLicense",
+                              license: e.target.value,
+                            });
+                          }}
                         />
                       </div>
-                      {/* Email address */}
+                      {/* Password */}
                       <div className="space-y-1">
                         <label
                           htmlFor="petrol_price"
                           className="text-sm font-medium"
                         >
-                          Email
+                          Password
                         </label>
                         <input
+                          value={state.stationPassword}
                           id="petrol_price"
-                          type="text"
+                          type="password"
                           name="petrol_price"
-                          className="w-full rounded-md outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
-                        />
-                      </div>
-                      {/* Phone Number */}
-                      <div className="space-y-1">
-                        <label
-                          htmlFor="petrol_price"
-                          className="text-sm font-medium"
-                        >
-                          Phone
-                        </label>
-                        <input
-                          id="petrol_price"
-                          type="text"
-                          name="petrol_price"
-                          className="w-full rounded-md outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
-                        />
-                      </div>
-                      {/* Latitude */}
-                      <div className="space-y-1">
-                        <label
-                          htmlFor="petrol_price"
-                          className="text-sm font-medium"
-                        >
-                          Latitude
-                        </label>
-                        <input
-                          id="petrol_price"
-                          type="text"
-                          name="petrol_price"
-                          className="w-full rounded-md outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
-                        />
-                      </div>
-                      {/* Longitude */}
-                      <div className="space-y-1">
-                        <label
-                          htmlFor="petrol_price"
-                          className="text-sm font-medium"
-                        >
-                          Longitude
-                        </label>
-                        <input
-                          id="petrol_price"
-                          type="text"
-                          name="petrol_price"
-                          className="w-full rounded-md outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                          className="w-full outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 rounded-md p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                          onChange={(e) => {
+                            dispatch({
+                              type: "setStationPassword",
+                              password: e.target.value,
+                            });
+                          }}
                         />
                       </div>
                     </form>
@@ -502,7 +625,7 @@ const SuperAdminDashboard = () => {
                     <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t ">
                       <button
                         type="button"
-                        class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm"
+                        class="py-3 px-8 inline-flex justify-center items-center gap-2 rounded-md border border-primColor font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-0 focus:ring-offset-0 transition-all text-sm"
                         data-hs-overlay="#hs-basic-modal"
                       >
                         Close
@@ -513,6 +636,15 @@ const SuperAdminDashboard = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           createModalRef.current.click();
+                          createStation(
+                            state.stationName,
+                            state.stationLatitude,
+                            state.stationLongitude,
+                            state.stationEmail,
+                            state.stationPassword,
+                            state.stationLicense
+                          );
+                          dispatch({ type: "triggerReload" });
                         }}
                       >
                         Create station
@@ -576,7 +708,9 @@ const SuperAdminDashboard = () => {
                             Number of Registered Stations
                           </p>
                           {/* Number */}
-                          <p className="font-pt  text-xl">200</p>
+                          <p className="font-pt  text-xl">
+                            {state.stats?.all_stations}
+                          </p>
                           <p className="font-pt text-gray-400">In 245 days</p>
                         </div>
                         <div
@@ -740,14 +874,16 @@ const SuperAdminDashboard = () => {
                                 </th>
                                 <td className="px-6 py-4">{station.name}</td>
                                 <td className="px-6 py-4">
-                                  {station.licenseNo}
+                                  {station.license_number}
                                 </td>
                                 <td className="px-6 py-4">
-                                  {station.dateRegistered}
+                                  {formatDate(station.created_at)}
                                 </td>
                                 <td className="px-6 py-4">{station.email}</td>
                                 <td className="px-6 py-4">
-                                  <Badge shade={station.status} />
+                                  <Badge
+                                    shade={station.is_open ? "open" : "closed"}
+                                  />
                                 </td>
                                 <td className="px-6 py-4 text-start font-bold text-xl hs-dropdown relative">
                                   <div className="hs-dropdown-toggle">

@@ -11,12 +11,10 @@ import { displayNotifications } from "../../Services/helper";
 const reducerFunction = (draft, action) => {
   switch (action.type) {
     case "changedEmail":
-      console.log(action.email);
       draft.error.email = action.error;
       draft.email = action.email;
       break;
     case "changedPassword":
-      console.log(action.password);
       draft.error.password = action.error;
       draft.password = action.password;
       break;

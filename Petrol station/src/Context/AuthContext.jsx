@@ -1,8 +1,9 @@
 import { createContext, useState, useEffect } from "react";
 // import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { useNavigate } from "react-router-dom";
-import { displayNotifications } from "../Services/helper";
+import { useNavigate, useLocation } from "react-router-dom";
+import { checkCurrentLocation } from "../Services/helper";
+// import { displayNotifications } from "../Services/helper";
 
 const AuthContext = createContext();
 
@@ -20,6 +21,7 @@ export const AuthProvider = ({ children }) => {
       : null
   );
   let [loading, setLoading] = useState(true);
+  const location = useLocation();
 
   const navigate = useNavigate();
 
@@ -42,7 +44,6 @@ export const AuthProvider = ({ children }) => {
 
     if (response.status === 200) {
       setAuthTokens(data);
-      console.log(data);
       setUser(jwt_decode(data.access));
       localStorage.setItem("authTokens", JSON.stringify(data));
       if (user?.role === 0) {
@@ -51,14 +52,13 @@ export const AuthProvider = ({ children }) => {
       } else if (user?.role === 1) {
         navigate("/user/dashboard");
         return "Login successful";
-        return;
       } else if (user?.role === 2) {
         navigate("/station/dashboard");
-        return "Login successful"
+        return "Login successful";
       }
     } else if (response.status === 401) {
       // Still handle error case
-      displayNotifications("Invalid login credential");
+      return "Invalid login credential";
     }
   };
 
@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
     setAuthTokens(null);
     setUser(null);
     localStorage.removeItem("authTokens");
-    navigate("/login")
+    navigate("/login");
   };
 
   // UpdateToken
@@ -87,7 +87,7 @@ export const AuthProvider = ({ children }) => {
       setAuthTokens(data);
       setUser(jwt_decode(data.access));
       localStorage.setItem("authTokens", JSON.stringify(data));
-    } else {
+    } else if (checkCurrentLocation(location.pathname)){
       logoutUser();
     }
 
@@ -104,7 +104,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (loading && authTokens != null) {
+    if (loading) {
       updateToken();
     }
 
@@ -118,7 +118,7 @@ export const AuthProvider = ({ children }) => {
   }, [authTokens, loading]);
 
   return (
-    // <AuthContext.Provider value={contextData}>{loading ? null : children}</AuthContext.Provider>
-    <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={contextData}>{loading ? null : children}</AuthContext.Provider>
+    // <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>
   );
 };
