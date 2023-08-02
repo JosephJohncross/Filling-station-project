@@ -9,6 +9,8 @@ import {
   formatDate,
 } from "../../../Services/helper";
 import Button from "../../Common/Button";
+import CustomModal from "../../Common/CustomModal";
+import TextInput from "../../Common/TextInput";
 import Histogram from "../../Charts/Histogram";
 import FusinChart from "../../Charts/FusionCharts";
 import Drawer from "../../Common/Drawer";
@@ -18,6 +20,7 @@ import {
   getStatistics,
 } from "../../../Services/admin-request";
 import AuthContext from "../../../Context/AuthContext";
+import { Collapse, initTE } from "tw-elements";
 
 const reducerFunction = (draft, action) => {
   switch (action.type) {
@@ -72,6 +75,20 @@ const reducerFunction = (draft, action) => {
     case "setStatistics":
       draft.stats = action.stats;
       break;
+    case "selectedStation":
+      // draft.stationEmail = action.station.email;
+      draft.stationName = action.station.name;
+      draft.stationLatitude = action.station.latitude;
+      draft.stationLongitude = action.station.longitude;
+      draft.stationId = action.station.user;
+      break;
+    case "clearForm":
+      // draft.stationEmail = "";
+      draft.stationName = "";
+      draft.stationLatitude = "";
+      draft.stationLongitude = "";
+      draft.stationId = "";
+      break;
 
     // Account modal
     case "toggleAccount":
@@ -79,6 +96,12 @@ const reducerFunction = (draft, action) => {
       break;
     case "triggerReload":
       draft.forceReload = !draft.forceReload;
+      break;
+    case "openEditModal":
+      draft.openEditModal = action.val;
+      break;
+    case "openDeleteModal":
+      draft.openDeleteModal = action.val;
       break;
   }
 };
@@ -90,6 +113,7 @@ const initialState = {
   verifiedStations: [],
   pendingVerification: [],
   users: [...userDummyData],
+  stationId: "",
   stationName: "",
   stationEmail: "",
   stationLicense: "",
@@ -98,6 +122,10 @@ const initialState = {
   stationPassword: "",
   forceReload: false,
   stats: null,
+
+  // Modal
+  openEditModal: "",
+  openDeleteModal: "",
 };
 
 const SuperAdminDashboard = () => {
@@ -106,6 +134,10 @@ const SuperAdminDashboard = () => {
   // Refs
   const createModalRef = useRef();
   const { logoutUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    initTE({ Collapse });
+  }, []);
 
   useEffect(() => {
     getStatistics().then((data) => {
@@ -826,23 +858,7 @@ const SuperAdminDashboard = () => {
                               </div>
                             </th>
                             <th scope="col" class="px-6 py-3">
-                              <div class="flex items-center">
-                                Email
-                                <a href="#">
-                                  <svg
-                                    className="w-3 h-3 ml-1.5"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                                  </svg>
-                                </a>
-                              </div>
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                              <div class="flex items-center">
+                              <div class="flex items-center justify-center">
                                 Status
                                 <a href="#">
                                   <svg
@@ -858,7 +874,7 @@ const SuperAdminDashboard = () => {
                               </div>
                             </th>
                             <th scope="col" className="px-6 py-3">
-                              <span class="sr-only">Edit</span>
+                              <span class="sr-only">Edit/Delete</span>
                             </th>
                           </tr>
                         </thead>
@@ -879,7 +895,6 @@ const SuperAdminDashboard = () => {
                                 <td className="px-6 py-4">
                                   {formatDate(station.created_at)}
                                 </td>
-                                <td className="px-6 py-4">{station.email}</td>
                                 <td className="px-6 py-4">
                                   <Badge
                                     shade={station.is_open ? "open" : "closed"}
@@ -887,17 +902,45 @@ const SuperAdminDashboard = () => {
                                 </td>
                                 <td className="px-6 py-4 text-start font-bold text-xl hs-dropdown relative">
                                   <div className="hs-dropdown-toggle">
-                                    <p className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline hs-dropdown-toggle">
+                                    <p className="cursor-pointer font-medium text-gray-400 hover:text-primColor  hs-dropdown-toggle">
                                       ...
                                     </p>
                                   </div>
-                                  {/* verifeid stations dropdown */}
+                                  {/* verified stations dropdown */}
                                   <div
                                     class="hs-dropdown-menu space-y-4 absolute right-0 px-4 py-3 shadow-md rounded-md transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 w-max hidden z-10 mt-2 min-w-[6rem] bg-white"
                                     aria-labelledby="hs-dropdown-unstyled"
                                   >
-                                    <p className="text-sm font-open">Edit</p>
-                                    <p className="text-sm font-open">Delete</p>
+                                    <p
+                                      className="text-sm font-open"
+                                      onClick={() => {
+                                        dispatch({
+                                          type: "selectedStation",
+                                          station: station,
+                                        });
+                                        dispatch({
+                                          type: "openEditModal",
+                                          val: "default",
+                                        });
+                                      }}
+                                    >
+                                      Edit
+                                    </p>
+                                    <p
+                                      className="text-sm font-open"
+                                      onClick={() => {
+                                        dispatch({
+                                          type: "selectedStation",
+                                          station: station,
+                                        });
+                                        dispatch({
+                                          type: "openDeleteModal",
+                                          val: "default",
+                                        });
+                                      }}
+                                    >
+                                      Delete
+                                    </p>
                                   </div>
                                 </td>
                               </tr>
@@ -905,6 +948,92 @@ const SuperAdminDashboard = () => {
                           })}
                         </tbody>
                       </table>
+
+                      {/* Edit Modal */}
+                      <div className="">
+                        <CustomModal
+                          component={
+                            <>
+                              <div className="">
+                                <div className="flex items-center space-x-3 pt-3">
+                                  {/* Email */}
+                                  <div className="mini:w-1/2">
+                                    <TextInput
+                                      dispatch={dispatch}
+                                      icon={true}
+                                      label={"Email Address"}
+                                      placeholder={"Enter email address"}
+                                      preValue={state.stationEmail}
+                                      // name={"email"}
+                                      type="email"
+                                      dispatchType={"createStaffEmail"}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </>
+                          }
+                          header={"Edit Station Details"}
+                          dispatch={dispatch}
+                          button1Text={"Close"}
+                          button2Text={"Edit"}
+                          modalState={state.openEditModal}
+                          secondaryOperationAction={() => {
+                            dispatch({ type: "openEditModal", val: undefined });
+                            dispatch({ type: "clearForm" });
+                          }}
+                        />
+                      </div>
+
+                      {/* Delete Modal */}
+                      <div className="">
+                        <CustomModal
+                          component={
+                            <>
+                              <div className="">
+                                <div className="flex flex-col">
+                                  <p className="text-center w-full font-medium text-lg">
+                                    Are you sure you want to delete
+                                    <span className="text-uniuyoGreen font-bold block">
+                                      {state.stationName}
+                                    </span>
+                                  </p>
+                                  <div className="w-full flex items-center justify-center space-x-6 pt-4">
+                                    <Button
+                                      clickFunction={() => {
+                                        dispatch({
+                                          type: "openDeleteModal",
+                                          val: undefined,
+                                        });
+                                        dispatch({ type: "clearForm" });
+                                      }}
+                                      content={"Cancel"}
+                                      shade={"gray"}
+                                    />
+                                    <Button
+                                      clickFunction={() => {
+                                        deleteStaff(state.staffId);
+                                        dispatch({
+                                          type: "openDeleteModal",
+                                          val: undefined,
+                                        });
+                                        dispatch({
+                                          type: "triggerReload",
+                                        });
+                                      }}
+                                      content={"Delete"}
+                                      shade={"blue"}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </>
+                          }
+                          dispatch={dispatch}
+                          modalState={state.openDeleteModal}
+                          defaultModalButton={false}
+                        />
+                      </div>
                     </div>
                   </div>
                 </>
