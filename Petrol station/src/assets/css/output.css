@@ -3121,11 +3121,6 @@ input[type="range"]::-ms-fill-lower {
   border-color: rgb(107 114 128 / var(--tw-border-opacity));
 }
 
-.border-green-900 {
-  --tw-border-opacity: 1;
-  border-color: rgb(1 71 55 / var(--tw-border-opacity));
-}
-
 .border-neutral-100 {
   --tw-border-opacity: 1;
   border-color: rgb(245 245 245 / var(--tw-border-opacity));
@@ -4264,6 +4259,11 @@ input[type="range"]::-ms-fill-lower {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.text-\[\#575757\] {
+  --tw-text-opacity: 1;
+  color: rgb(87 87 87 / var(--tw-text-opacity));
+}
+
 .underline {
   text-decoration-line: underline;
 }
@@ -4964,6 +4964,11 @@ input[type="range"]::-ms-fill-lower {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.hover\:text-primColor:hover {
+  --tw-text-opacity: 1;
+  color: rgb(56 74 173 / var(--tw-text-opacity));
+}
+
 .hover\:underline:hover {
   text-decoration-line: underline;
 }
@@ -5181,6 +5186,10 @@ input[type="range"]::-ms-fill-lower {
 .focus\:ring-sky-500:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(14 165 233 / var(--tw-ring-opacity));
+}
+
+.focus\:ring-offset-0:focus {
+  --tw-ring-offset-width: 0px;
 }
 
 .focus\:ring-offset-2:focus {

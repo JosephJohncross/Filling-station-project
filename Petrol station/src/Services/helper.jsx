@@ -128,3 +128,29 @@ export const displayNotifications = (message) => {
 };
 //Service that handles notifcations
 const notify = (message) => toast(message);
+
+export const formatDate = (unformattedDate) => {
+  const formattedDate = new Date(unformattedDate).toLocaleString("en-US", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+
+  return formattedDate;
+};
+
+export const checkCurrentLocation = (path) => {
+  if (
+    path == "/user/dashboard" ||
+    path == "/station/dashboard" ||
+    path == "/admin/dashboard"
+  ) {
+    console.log("caught in the act")
+    return true;
+  } else {
+    return false;
+  }
+};

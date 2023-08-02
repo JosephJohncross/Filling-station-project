@@ -12,7 +12,6 @@ const PrivateRoutes = () => {
   let location = useLocation();
 
   let { user } = useContext(AuthContext);
-  console.log("Hello")
   console.log(user);
   if (user && user.role === 1) {
     return <UserDashboard />;
@@ -21,7 +20,7 @@ const PrivateRoutes = () => {
   } else if (user && user.role === 0) {
     return <SuperAdminDashboard />;
   } else if (user === null) {
-    return <Navigate to={"/login"} />;
+    return Navigate("/login");
   }
 };
 

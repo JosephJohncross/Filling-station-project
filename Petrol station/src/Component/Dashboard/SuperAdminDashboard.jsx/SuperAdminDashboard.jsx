@@ -1,13 +1,26 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useContext } from "react";
 import { useImmerReducer } from "use-immer";
 import DashboardNavs from "./DashboardNavs";
 import AdminDashboardCard from "./AdminDashboardCard";
 import Badge from "./Badge";
-import { stationDummyData, userDummyData } from "../../../Services/helper";
+import {
+  stationDummyData,
+  userDummyData,
+  formatDate,
+} from "../../../Services/helper";
 import Button from "../../Common/Button";
+import CustomModal from "../../Common/CustomModal";
+import TextInput from "../../Common/TextInput";
 import Histogram from "../../Charts/Histogram";
 import FusinChart from "../../Charts/FusionCharts";
 import Drawer from "../../Common/Drawer";
+import {
+  createStation,
+  getAllStatiions,
+  getStatistics,
+} from "../../../Services/admin-request";
+import AuthContext from "../../../Context/AuthContext";
+import { Collapse, initTE } from "tw-elements";
 
 const reducerFunction = (draft, action) => {
   switch (action.type) {
@@ -35,24 +48,84 @@ const reducerFunction = (draft, action) => {
     case "setStations":
       draft.stations = action.stations;
       break;
+    case "setVerifiedStations":
+      draft.verifiedStations = action.verified;
+      break;
+    case "setPendingStations":
+      draft.pendingVerification = action.pending;
+      break;
+    case "setStationName":
+      draft.stationName = action.name;
+      break;
+    case "setStationEmail":
+      draft.stationEmail = action.email;
+      break;
+    case "setStationLicense":
+      draft.stationLicense = action.license;
+      break;
+    case "setStationLongitude":
+      draft.stationLongitude = action.longitude;
+      break;
+    case "setStationLatitude":
+      draft.stationLatitude = action.latitude;
+      break;
+    case "setStationPassword":
+      draft.stationPassword = action.password;
+      break;
+    case "setStatistics":
+      draft.stats = action.stats;
+      break;
+    case "selectedStation":
+      // draft.stationEmail = action.station.email;
+      draft.stationName = action.station.name;
+      draft.stationLatitude = action.station.latitude;
+      draft.stationLongitude = action.station.longitude;
+      draft.stationId = action.station.user;
+      break;
+    case "clearForm":
+      // draft.stationEmail = "";
+      draft.stationName = "";
+      draft.stationLatitude = "";
+      draft.stationLongitude = "";
+      draft.stationId = "";
+      break;
 
     // Account modal
     case "toggleAccount":
       draft.createStationModal = draft.val;
+      break;
+    case "triggerReload":
+      draft.forceReload = !draft.forceReload;
+      break;
+    case "openEditModal":
+      draft.openEditModal = action.val;
+      break;
+    case "openDeleteModal":
+      draft.openDeleteModal = action.val;
+      break;
   }
 };
 
 const initialState = {
   activeTab: "dash",
   activeBody: "dash",
-  stations: [...stationDummyData],
-  verifiedStations: [...stationDummyData].filter((station) => {
-    return station.verified === true;
-  }),
-  pendingVerification: [...stationDummyData].filter((station) => {
-    return station.verified === false;
-  }),
+  stations: [],
+  verifiedStations: [],
+  pendingVerification: [],
   users: [...userDummyData],
+  stationId: "",
+  stationName: "",
+  stationEmail: "",
+  stationLicense: "",
+  stationLatitude: "",
+  stationLongitude: "",
+  stationPassword: "",
+  forceReload: false,
+  stats: null,
+
+  // Modal
+  openEditModal: "",
+  openDeleteModal: "",
 };
 
 const SuperAdminDashboard = () => {
@@ -60,6 +133,39 @@ const SuperAdminDashboard = () => {
 
   // Refs
   const createModalRef = useRef();
+  const { logoutUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    initTE({ Collapse });
+  }, []);
+
+  useEffect(() => {
+    getStatistics().then((data) => {
+      dispatch({ type: "setStatistics", stats: data });
+    });
+  }, []);
+  useEffect(() => {}, [state.forceReload]);
+
+  useEffect(() => {
+    if (state.activeBody === "allStations") {
+      getAllStatiions().then((data) => {
+        console.log("All stations" + " " + data);
+        dispatch({ type: "setStations", stations: data });
+        dispatch({
+          type: "setVerifiedStations",
+          verified: [...state.stations].filter((station) => {
+            return station.is_verified;
+          }),
+        });
+        dispatch({
+          type: "setVerifiedStations",
+          pending: [...state.stations].filter((station) => {
+            return station.is_verified;
+          }),
+        });
+      });
+    }
+  }, [state.activeBody]);
 
   return (
     <>
@@ -150,7 +256,9 @@ const SuperAdminDashboard = () => {
                 />
                 <button
                   className="rounded-md px-6 py-2 font-semibold font-pt text-base focus:outline-red-500 w-full  text-[#F2F2F2] bg-red-600 shadow-md hover:bg-red-500 hover:shadow-sm flex justify-center items-center"
-                  onClick={() => {}}
+                  onClick={() => {
+                    logoutUser();
+                  }}
                 >
                   Logout
                 </button>
@@ -162,7 +270,7 @@ const SuperAdminDashboard = () => {
           {/* Mobile version */}
           <div className="px-4 flex justify-between items-center mini:hidden shadow-md">
             <div className="flex items-center">
-              <Drawer/>
+              <Drawer />
               {/* logo */}
               <div className="py-5 bg-white mini:flex justify-center items-center">
                 <img src="/logo.svg" alt="logo" className="w-28" />
@@ -356,23 +464,24 @@ const SuperAdminDashboard = () => {
                     </div>
                     <AdminDashboardCard
                       icon={"/verified.svg"}
-                      quantity={"230"}
+                      quantity={state.stats?.verified_stations}
                       cardText={"Verified Stations"}
                     />
                     <AdminDashboardCard
                       icon={"/pending.svg"}
-                      quantity={"15"}
+                      quantity={state.stats?.pending_verification_stations}
                       cardText={"Pending Stations"}
                     />
                     <AdminDashboardCard
                       icon={"/cancelled.svg"}
-                      quantity={"210"}
+                      quantity={"0"}
                       cardText={"Canceled Stations"}
                     />
                   </div>
                 </>
               )}
 
+              {/* Create Station Account modal */}
               <div
                 id="hs-basic-modal"
                 class="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-hidden overflow-y-auto"
@@ -406,7 +515,12 @@ const SuperAdminDashboard = () => {
                       </button>
                     </div>
                     {/* Body */}
-                    <form className="mx-5 my-6 mini:grid  mini:gap-x-5 mini:gap-y-3 mini:grid-cols-2">
+                    <form
+                      className="mx-5 my-6 mini:grid  mini:gap-x-5 mini:gap-y-3 mini:grid-cols-2"
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                      }}
+                    >
                       {/* Filling station name */}
                       <div className="space-y-1">
                         <label
@@ -416,10 +530,83 @@ const SuperAdminDashboard = () => {
                           Filling Station Name
                         </label>
                         <input
+                          value={state.stationName}
                           id="petrol_price"
                           type="text"
                           name="petrol_price"
                           className="w-full outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 rounded-md p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                          onChange={(e) => {
+                            dispatch({
+                              type: "setStationName",
+                              name: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                      {/* Email address */}
+                      <div className="space-y-1">
+                        <label
+                          htmlFor="petrol_price"
+                          className="text-sm font-medium"
+                        >
+                          Email
+                        </label>
+                        <input
+                          value={state.stationEmail}
+                          id="petrol_price"
+                          type="text"
+                          name="petrol_price"
+                          className="w-full rounded-md outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                          onChange={(e) => {
+                            dispatch({
+                              type: "setStationEmail",
+                              email: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                      {/* Latitude */}
+                      <div className="space-y-1">
+                        <label
+                          htmlFor="petrol_price"
+                          className="text-sm font-medium"
+                        >
+                          Latitude
+                        </label>
+                        <input
+                          value={state.stationLatitude}
+                          id="petrol_price"
+                          type="text"
+                          name="petrol_price"
+                          className="w-full rounded-md outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                          onChange={(e) => {
+                            dispatch({
+                              type: "setStationLatitude",
+                              latitude: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                      {/* Longitude */}
+                      <div className="space-y-1">
+                        <label
+                          htmlFor="petrol_price"
+                          className="text-sm font-medium"
+                        >
+                          Longitude
+                        </label>
+                        <input
+                          value={state.stationLongitude}
+                          id="petrol_price"
+                          type="text"
+                          name="petrol_price"
+                          className="w-full rounded-md outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                          onChange={(e) => {
+                            dispatch({
+                              type: "setStationLongitude",
+                              longitude: e.target.value,
+                            });
+                          }}
                         />
                       </div>
                       {/* License Number */}
@@ -435,66 +622,34 @@ const SuperAdminDashboard = () => {
                           type="text"
                           name="petrol_price"
                           className="w-full outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 rounded-md p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                          onChange={(e) => {
+                            dispatch({
+                              type: "setStationLicense",
+                              license: e.target.value,
+                            });
+                          }}
                         />
                       </div>
-                      {/* Email address */}
+                      {/* Password */}
                       <div className="space-y-1">
                         <label
                           htmlFor="petrol_price"
                           className="text-sm font-medium"
                         >
-                          Email
+                          Password
                         </label>
                         <input
+                          value={state.stationPassword}
                           id="petrol_price"
-                          type="text"
+                          type="password"
                           name="petrol_price"
-                          className="w-full rounded-md outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
-                        />
-                      </div>
-                      {/* Phone Number */}
-                      <div className="space-y-1">
-                        <label
-                          htmlFor="petrol_price"
-                          className="text-sm font-medium"
-                        >
-                          Phone
-                        </label>
-                        <input
-                          id="petrol_price"
-                          type="text"
-                          name="petrol_price"
-                          className="w-full rounded-md outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
-                        />
-                      </div>
-                      {/* Latitude */}
-                      <div className="space-y-1">
-                        <label
-                          htmlFor="petrol_price"
-                          className="text-sm font-medium"
-                        >
-                          Latitude
-                        </label>
-                        <input
-                          id="petrol_price"
-                          type="text"
-                          name="petrol_price"
-                          className="w-full rounded-md outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
-                        />
-                      </div>
-                      {/* Longitude */}
-                      <div className="space-y-1">
-                        <label
-                          htmlFor="petrol_price"
-                          className="text-sm font-medium"
-                        >
-                          Longitude
-                        </label>
-                        <input
-                          id="petrol_price"
-                          type="text"
-                          name="petrol_price"
-                          className="w-full rounded-md outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                          className="w-full outline-none focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 rounded-md p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                          onChange={(e) => {
+                            dispatch({
+                              type: "setStationPassword",
+                              password: e.target.value,
+                            });
+                          }}
                         />
                       </div>
                     </form>
@@ -502,7 +657,7 @@ const SuperAdminDashboard = () => {
                     <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t ">
                       <button
                         type="button"
-                        class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm"
+                        class="py-3 px-8 inline-flex justify-center items-center gap-2 rounded-md border border-primColor font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-0 focus:ring-offset-0 transition-all text-sm"
                         data-hs-overlay="#hs-basic-modal"
                       >
                         Close
@@ -513,6 +668,15 @@ const SuperAdminDashboard = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           createModalRef.current.click();
+                          createStation(
+                            state.stationName,
+                            state.stationLatitude,
+                            state.stationLongitude,
+                            state.stationEmail,
+                            state.stationPassword,
+                            state.stationLicense
+                          );
+                          dispatch({ type: "triggerReload" });
                         }}
                       >
                         Create station
@@ -576,7 +740,9 @@ const SuperAdminDashboard = () => {
                             Number of Registered Stations
                           </p>
                           {/* Number */}
-                          <p className="font-pt  text-xl">200</p>
+                          <p className="font-pt  text-xl">
+                            {state.stats?.all_stations}
+                          </p>
                           <p className="font-pt text-gray-400">In 245 days</p>
                         </div>
                         <div
@@ -692,23 +858,7 @@ const SuperAdminDashboard = () => {
                               </div>
                             </th>
                             <th scope="col" class="px-6 py-3">
-                              <div class="flex items-center">
-                                Email
-                                <a href="#">
-                                  <svg
-                                    className="w-3 h-3 ml-1.5"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
-                                  </svg>
-                                </a>
-                              </div>
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                              <div class="flex items-center">
+                              <div class="flex items-center justify-center">
                                 Status
                                 <a href="#">
                                   <svg
@@ -724,7 +874,7 @@ const SuperAdminDashboard = () => {
                               </div>
                             </th>
                             <th scope="col" className="px-6 py-3">
-                              <span class="sr-only">Edit</span>
+                              <span class="sr-only">Edit/Delete</span>
                             </th>
                           </tr>
                         </thead>
@@ -740,28 +890,57 @@ const SuperAdminDashboard = () => {
                                 </th>
                                 <td className="px-6 py-4">{station.name}</td>
                                 <td className="px-6 py-4">
-                                  {station.licenseNo}
+                                  {station.license_number}
                                 </td>
                                 <td className="px-6 py-4">
-                                  {station.dateRegistered}
+                                  {formatDate(station.created_at)}
                                 </td>
-                                <td className="px-6 py-4">{station.email}</td>
                                 <td className="px-6 py-4">
-                                  <Badge shade={station.status} />
+                                  <Badge
+                                    shade={station.is_open ? "open" : "closed"}
+                                  />
                                 </td>
                                 <td className="px-6 py-4 text-start font-bold text-xl hs-dropdown relative">
                                   <div className="hs-dropdown-toggle">
-                                    <p className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline hs-dropdown-toggle">
+                                    <p className="cursor-pointer font-medium text-gray-400 hover:text-primColor  hs-dropdown-toggle">
                                       ...
                                     </p>
                                   </div>
-                                  {/* verifeid stations dropdown */}
+                                  {/* verified stations dropdown */}
                                   <div
                                     class="hs-dropdown-menu space-y-4 absolute right-0 px-4 py-3 shadow-md rounded-md transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 w-max hidden z-10 mt-2 min-w-[6rem] bg-white"
                                     aria-labelledby="hs-dropdown-unstyled"
                                   >
-                                    <p className="text-sm font-open">Edit</p>
-                                    <p className="text-sm font-open">Delete</p>
+                                    <p
+                                      className="text-sm font-open"
+                                      onClick={() => {
+                                        dispatch({
+                                          type: "selectedStation",
+                                          station: station,
+                                        });
+                                        dispatch({
+                                          type: "openEditModal",
+                                          val: "default",
+                                        });
+                                      }}
+                                    >
+                                      Edit
+                                    </p>
+                                    <p
+                                      className="text-sm font-open"
+                                      onClick={() => {
+                                        dispatch({
+                                          type: "selectedStation",
+                                          station: station,
+                                        });
+                                        dispatch({
+                                          type: "openDeleteModal",
+                                          val: "default",
+                                        });
+                                      }}
+                                    >
+                                      Delete
+                                    </p>
                                   </div>
                                 </td>
                               </tr>
@@ -769,6 +948,92 @@ const SuperAdminDashboard = () => {
                           })}
                         </tbody>
                       </table>
+
+                      {/* Edit Modal */}
+                      <div className="">
+                        <CustomModal
+                          component={
+                            <>
+                              <div className="">
+                                <div className="flex items-center space-x-3 pt-3">
+                                  {/* Email */}
+                                  <div className="mini:w-1/2">
+                                    <TextInput
+                                      dispatch={dispatch}
+                                      icon={true}
+                                      label={"Email Address"}
+                                      placeholder={"Enter email address"}
+                                      preValue={state.stationEmail}
+                                      // name={"email"}
+                                      type="email"
+                                      dispatchType={"createStaffEmail"}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </>
+                          }
+                          header={"Edit Station Details"}
+                          dispatch={dispatch}
+                          button1Text={"Close"}
+                          button2Text={"Edit"}
+                          modalState={state.openEditModal}
+                          secondaryOperationAction={() => {
+                            dispatch({ type: "openEditModal", val: undefined });
+                            dispatch({ type: "clearForm" });
+                          }}
+                        />
+                      </div>
+
+                      {/* Delete Modal */}
+                      <div className="">
+                        <CustomModal
+                          component={
+                            <>
+                              <div className="">
+                                <div className="flex flex-col">
+                                  <p className="text-center w-full font-medium text-lg">
+                                    Are you sure you want to delete
+                                    <span className="text-uniuyoGreen font-bold block">
+                                      {state.stationName}
+                                    </span>
+                                  </p>
+                                  <div className="w-full flex items-center justify-center space-x-6 pt-4">
+                                    <Button
+                                      clickFunction={() => {
+                                        dispatch({
+                                          type: "openDeleteModal",
+                                          val: undefined,
+                                        });
+                                        dispatch({ type: "clearForm" });
+                                      }}
+                                      content={"Cancel"}
+                                      shade={"gray"}
+                                    />
+                                    <Button
+                                      clickFunction={() => {
+                                        deleteStaff(state.staffId);
+                                        dispatch({
+                                          type: "openDeleteModal",
+                                          val: undefined,
+                                        });
+                                        dispatch({
+                                          type: "triggerReload",
+                                        });
+                                      }}
+                                      content={"Delete"}
+                                      shade={"blue"}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </>
+                          }
+                          dispatch={dispatch}
+                          modalState={state.openDeleteModal}
+                          defaultModalButton={false}
+                        />
+                      </div>
                     </div>
                   </div>
                 </>
