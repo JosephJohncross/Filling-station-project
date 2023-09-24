@@ -3,9 +3,14 @@ import React, { useState } from "react";
 // image import
 // import defaultImg  from "../../../assets/images/"
 
-const StationAmenities = ({ icon = false, amenityName, amenityStatus }) => {
-    const [amenityAvailable, setAmenityAvailable] = useState(amenityStatus)
-
+const StationAmenities = ({
+  icon = false,
+  amenityName,
+  amenityStatus,
+  dispatch,
+  dispatchName,
+}) => {
+  // const [amenityAvailable, setAmenityAvailable] = useState(amenityStatus);
 
   return (
     <>
@@ -14,18 +19,18 @@ const StationAmenities = ({ icon = false, amenityName, amenityStatus }) => {
         <div className="flex items-center space-x-4">
           <span className="flex space-x-3 items-center ">
             {/* <span className={`${icon ? "flex justify-center items-center border border-primColor rounded-full w-11 h-11" : ""}`}> */}
-              <img
-                src={icon ? icon : "/default-amenity.svg"}
-                alt=""
-                className={icon ? "w-7" : ""}
-              />
-            </span>
-            <p className="min-w-max">{amenityName}</p>
+            <img
+              src={icon ? icon : "/default-amenity.svg"}
+              alt=""
+              className={icon ? "w-7" : ""}
+            />
+          </span>
+          <p className="min-w-max">{amenityName}</p>
           {/* </span> */}
         </div>
         {/* Right flex */}
         <div className="">
-            <label
+          <label
             for={`${amenityName}`}
             className="inline-flex items-center space-x-4 cursor-pointer"
           >
@@ -34,9 +39,14 @@ const StationAmenities = ({ icon = false, amenityName, amenityStatus }) => {
                 id={`${amenityName}`}
                 type="checkbox"
                 className="hidden peer"
-                checked={amenityAvailable}
+                // checked={amenityStatus === 1 ? true : false}
                 onChange={(e) => {
-                    setAmenityAvailable(!amenityAvailable)
+                  // setAmenityAvailable(!amenityAvailable);
+                  console.log("Hello")
+                  dispatch({
+                    type: dispatchName,
+                    val: e.target.checked ? 1 : 0,
+                  });
                 }}
               />
               <div className="w-10 h-6 rounded-full shadow-inner bg-gray-300  peer-checked:bg-primColor"></div>

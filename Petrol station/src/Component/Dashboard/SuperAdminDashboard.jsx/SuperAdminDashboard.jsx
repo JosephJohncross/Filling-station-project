@@ -149,7 +149,7 @@ const SuperAdminDashboard = () => {
   useEffect(() => {
     if (state.activeBody === "allStations") {
       getAllStatiions().then((data) => {
-        console.log("All stations" + " " + data);
+        console.log(data);
         dispatch({ type: "setStations", stations: data });
         dispatch({
           type: "setVerifiedStations",
@@ -858,6 +858,9 @@ const SuperAdminDashboard = () => {
                               </div>
                             </th>
                             <th scope="col" class="px-6 py-3">
+                              <div class="flex items-center">Email</div>
+                            </th>
+                            <th scope="col" class="px-6 py-3">
                               <div class="flex items-center justify-center">
                                 Status
                                 <a href="#">
@@ -893,8 +896,9 @@ const SuperAdminDashboard = () => {
                                   {station.license_number}
                                 </td>
                                 <td className="px-6 py-4">
-                                  {formatDate(station.created_at)}
+                                  {formatDate(station.joined)}
                                 </td>
+                                <td className="px-6 py-4">{station.email}</td>
                                 <td className="px-6 py-4">
                                   <Badge
                                     shade={station.is_open ? "open" : "closed"}
@@ -1122,43 +1126,51 @@ const SuperAdminDashboard = () => {
                           </tr>
                         </thead>
                         <tbody className="">
-                          {state.verifiedStations.map((station, index) => {
-                            return (
-                              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <th
-                                  scope="row"
-                                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                                >
-                                  {index + 1}
-                                </th>
-                                <td className="px-6 py-4">{station.name}</td>
-                                <td className="px-6 py-4">
-                                  {station.licenseNo}
-                                </td>
-                                <td className="px-6 py-4">
-                                  {station.dateRegistered}
-                                </td>
-                                <td className="px-6 py-4">{station.email}</td>
-                                <td className="px-6 py-4">
-                                  <Badge shade={station.status} />
-                                </td>
-                                <td className="px-6 py-4 text-start font-bold text-xl hs-dropdown relative">
-                                  <div className="hs-dropdown-toggle">
-                                    <p className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline hs-dropdown-toggle">
-                                      ...
-                                    </p>
-                                  </div>
-                                  {/* verifeid stations dropdown */}
-                                  <div
-                                    class="hs-dropdown-menu space-y-4 absolute right-0 px-4 py-3 shadow-md rounded-md transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 w-max hidden z-10 mt-2 min-w-[6rem] bg-white"
-                                    aria-labelledby="hs-dropdown-unstyled"
+                          {state.stations
+                            .filter((station) => station.is_verified === true)
+                            .map((station, index) => {
+                              return (
+                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                  <th
+                                    scope="row"
+                                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                   >
-                                    <p className="text-sm font-open">Delete</p>
-                                  </div>
-                                </td>
-                              </tr>
-                            );
-                          })}
+                                    {index + 1}
+                                  </th>
+                                  <td className="px-6 py-4">{station.name}</td>
+                                  <td className="px-6 py-4">
+                                    {station.license_number}
+                                  </td>
+                                  <td className="px-6 py-4">
+                                    {formatDate(station.joined)}
+                                  </td>
+                                  <td className="px-6 py-4">{station.email}</td>
+                                  <td className="px-6 py-4">
+                                    <Badge
+                                      shade={
+                                        station.is_open ? "open" : "closed"
+                                      }
+                                    />
+                                  </td>
+                                  <td className="px-6 py-4 text-start font-bold text-xl hs-dropdown relative">
+                                    <div className="hs-dropdown-toggle">
+                                      <p className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline hs-dropdown-toggle">
+                                        ...
+                                      </p>
+                                    </div>
+                                    {/* verifeid stations dropdown */}
+                                    <div
+                                      class="hs-dropdown-menu space-y-4 absolute right-0 px-4 py-3 shadow-md rounded-md transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 w-max hidden z-10 mt-2 min-w-[6rem] bg-white"
+                                      aria-labelledby="hs-dropdown-unstyled"
+                                    >
+                                      <p className="text-sm font-open">
+                                        Delete
+                                      </p>
+                                    </div>
+                                  </td>
+                                </tr>
+                              );
+                            })}
                         </tbody>
                       </table>
                     </div>
@@ -1248,42 +1260,58 @@ const SuperAdminDashboard = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {state.pendingVerification.map((station, index) => {
-                          return (
-                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
-                              <th
-                                scope="row"
-                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                              >
-                                {index + 1}
-                              </th>
-                              <td className="px-6 py-4">{station.name}</td>
-                              <td className="px-6 py-4">{station.licenseNo}</td>
-                              <td className="px-6 py-4">
-                                {station.dateRegistered}
-                              </td>
-                              <td className="px-6 py-4">{station.email}</td>
-                              <td className="px-6 py-4">
-                                <Badge shade={station.status} />
-                              </td>
-                              <td className="px-6 py-4 text-start font-bold text-xl hs-dropdown relative">
-                                <div className="hs-dropdown-toggle">
-                                  <p className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline hs-dropdown-toggle">
-                                    ...
-                                  </p>
-                                </div>
-                                {/* verifeid stations dropdown */}
-                                <div
-                                  class="hs-dropdown-menu space-y-4 absolute right-0 px-4 py-3 shadow-md rounded-md transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 w-max hidden z-10 mt-2 min-w-[6rem] bg-white"
-                                  aria-labelledby="hs-dropdown-unstyled"
+                        {state.stations
+                          .filter((station) => station.is_verified === false)
+                          .map((station, index) => {
+                            return (
+                              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th
+                                  scope="row"
+                                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                 >
-                                  <p className="text-sm font-open">Approve</p>
-                                  <p className="text-sm font-open">Delete</p>
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                        })}
+                                  {index + 1}
+                                </th>
+                                <td className="px-6 py-4">{station.name}</td>
+                                <td className="px-6 py-4">
+                                  {station.license_number}
+                                </td>
+                                <td className="px-6 py-4">
+                                  {formatDate(station.joined)}
+                                </td>
+                                <td className="px-6 py-4">{station.email}</td>
+                                <td className="px-6 py-4">
+                                  <Badge
+                                    shade={station.is_open ? "open" : "closed"}
+                                  />
+                                </td>
+                                <td className="px-6 py-4 text-start font-bold text-xl hs-dropdown relative">
+                                  <div className="hs-dropdown-toggle">
+                                    <p className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline hs-dropdown-toggle">
+                                      ...
+                                    </p>
+                                  </div>
+                                  {/* verifeid stations dropdown */}
+                                  <div
+                                    class="hs-dropdown-menu space-y-4 absolute right-0 px-4 py-3 shadow-md rounded-md transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 w-max hidden z-10 mt-2 min-w-[6rem] bg-white"
+                                    aria-labelledby="hs-dropdown-unstyled"
+                                  >
+                                    <button
+                                      className="text-sm font-open block"
+                                      onClick={() => {}}
+                                    >
+                                      Verify
+                                    </button>
+                                    <button
+                                      className="text-sm font-open"
+                                      onClick={() => {}}
+                                    >
+                                      Delete
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
                       </tbody>
                     </table>
                   </div>

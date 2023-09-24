@@ -50,7 +50,6 @@ export const patchWithAuthorization = async (params) => {
   return result;
 };
 
-
 export const deleteWithAuthorization = async (params) => {
   let { body, url, authTokens } = params;
 
@@ -65,3 +64,29 @@ export const deleteWithAuthorization = async (params) => {
   let result = (await response).data;
   return result;
 };
+
+export const getStationInMyLocation = async (latitude, longitude) =>
+  axios
+    .get(
+      `http://127.0.0.1:8000/api/station/get_stations_in_my_location?latitude=${latitude}&longtitude=${longitude}`
+    )
+    .then((response) => {
+      console.log(response.data);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+
+export const getStationReview = async (stationId) =>
+  axios
+    .get(
+      `http://127.0.0.1:8000/api/review/get_station_reviews/${stationId}`
+    )
+    .then((response) => {
+      // console.log(response.data.stations);
+      return response.data.reviews;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });

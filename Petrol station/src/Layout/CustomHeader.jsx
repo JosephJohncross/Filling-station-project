@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 const CustomHeader = () => {
   return (
     <>
-      <nav className='bg-white py-4 shadow-md sticky top-0 z-[1000000]'>
+      <nav className='bg-white py-4 shadow-md sticky top-0 z-[9000]'>
         <div className='container_limiter justify-between flex items-center'>
           <img src={logo} alt='' className='w-24'/>
           <div className='flex space-x-10 items-center font-open font-medium'>

@@ -19,6 +19,7 @@ const StationSearchCard = ({
   hide,
   stationImg,
   favorite,
+  stationSlug
 }) => {
   return (
     <div
@@ -59,11 +60,14 @@ const StationSearchCard = ({
             </p>
           </>
         )}
-        <Link to="/station">
+        <Link to={`/station/${stationSlug}`}>
           <Button
             shade={"blueBig"}
             content={favorite ? "Visit" : "Go to"}
             icon={true}
+            clickFunction={()=> {
+
+            }}
           />
         </Link>
       </div>

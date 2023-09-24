@@ -1,17 +1,39 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 const { VITE_USERNAME, VITE_STYLE_ID, VITE_ACCESS_TOKEN } = import.meta.env;
 import { useNavigate } from "react-router-dom";
-
-import { Icon } from "leaflet";
+import { useImmerReducer } from "use-immer";
+// import { Icon } from "leaflet";
 import DefaultHeader from "../Layout/DefaultHeader";
-import { Link } from "react-router-dom";
-import AuthContext from "../Context/AuthContext";
+// import { Link } from "react-router-dom";
+// import AuthContext from "../Context/AuthContext";
 
 import hero from "../../public/hero.svg";
 import Button from "../Component/Common/Button";
+import { displayNotifications } from "../Services/helper";
+import { getStationInMyLocation } from "../Services/http-request";
+
+const reducerFunction = (draft, action) => {
+  switch (action.type) {
+    case "setLatitude":
+      draft.latitude = action.val;
+      break;
+    case "setLongitude":
+      draft.longitude = action.val;
+      break;
+  }
+};
+
+const initialState = {
+  latitude: "",
+  longitude: "",
+};
 
 const Homepage = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  // const [longitude, setLocation] = useState(null);
+  // const [lat, setLatitude] = useState(null);
+  // const [long, setLongitude] = useState(null);
+  const [state, dispatch] = useImmerReducer(reducerFunction, initialState);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -20,6 +42,28 @@ const Homepage = () => {
       controller.abort();
     };
   }, []);
+
+  const getCurrentLocation = () => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          // localStorage.setItem('latitude', latitude)
+          // localStorage.setItem('longitude', longitude)
+          localStorage.setItem('latitude', 7.9122)
+          localStorage.setItem('longitude', 5.0116)
+          // getStationInMyLocation(7.9122, 5.0116);
+        },
+        (error) => {
+          displayNotifications("Error getting location");
+          // console.error("Error getting location:", error);
+        }
+      );
+    } else {
+      displayNotifications("Location not available in this browser");
+      // console.error("Geolocation is not available in this browser.");
+    }
+  };
 
   return (
     <>
@@ -47,13 +91,17 @@ const Homepage = () => {
             <li>and many more...</li>
           </ul>
           <div className=" py-8">
-            <Button
-              shade={"blue"}
-              content={"See Filling Stations Close to you"}
-              clickFunction={() => {
-                navigate('stations')
+            <button
+              className="rounded-md px-6 py-2 font-semibold font-pt text-base focus:outline-primColor  text-[#F2F2F2] bg-primColor shadow-md hover:bg-primColor/80 hover:shadow-sm flex justify-center items-center"
+              onClick={() => {
+                getCurrentLocation();
+                navigate("stations");
+                
+                // displayNotifications(`${state.latitude} ${state.longitude}`);
               }}
-            />
+            >
+              See Filling Stations Close to you
+            </button>
           </div>
         </div>
       </div>

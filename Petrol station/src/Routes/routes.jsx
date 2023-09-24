@@ -23,7 +23,7 @@ export const CustomRoutes = () => {
     <Route path="signup" element={<SignUp />} />,
     <Route path="/stationsignup" element={<StationSignUp />} />,
     <Route path="/customersignup" element={<CustomerSignUp />} />,
-    <Route path="station" element={<StationPage />} />,
+    <Route path="station/:slug" element={<StationPage />} />,
     <Route path="stations" element={<GeneralStationPage />} />,
     <Route path="search" element={<Search />} />,
 
