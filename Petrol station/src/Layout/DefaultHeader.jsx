@@ -7,8 +7,8 @@ import Button from "../Component/Common/Button";
 import { Link, Navigate } from "react-router-dom";
 import Drawer from "../Component/Common/Drawer";
 
-const DefaultHeader = ({ hasBg=true }) => {
-  const { user } = useContext(AuthContext);
+const DefaultHeader = ({ hasBg = true, dispatch }) => {
+  const { user, logoutUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   return (

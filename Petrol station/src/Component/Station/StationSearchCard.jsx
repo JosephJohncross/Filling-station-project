@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 
 // image import
 import ratingIcon from "../../assets/images/rating.svg";
 import Button from "../Common/Button";
 import PriceCard from "./PriceCard";
 import { Link } from "react-router-dom";
+import { removeStationFromFavourites } from "../../Services/user-request";
+import AuthContext from "../../Context/AuthContext";
+import { displayNotifications } from "../../Services/helper";
 
 const StationSearchCard = ({
   distance,
@@ -19,8 +22,12 @@ const StationSearchCard = ({
   hide,
   stationImg,
   favorite,
-  stationSlug
+  stationSlug,
+  dispatch,
+  stationId,
 }) => {
+  const { user } = useContext(AuthContext);
+
   return (
     <div
       className="w-full p-6 flex flex-col mini:flex-row gap-y-5 mini:gap-y-0 bg-white font-open shadow-rounded-xl hover:bg-gray-100/80 transition-colors duration-200"
@@ -30,7 +37,7 @@ const StationSearchCard = ({
       <div className="w-full mini:w-2/3 flex flex-col space-y-3">
         {/* Direction and opening hour */}
         <div className="flex divide-x items-center space-x-2 text-xs">
-          <p className="">{distance} away</p>
+          <p className="">{distance}</p>
           <p className="text-[#0B8826] pl-2">Open from {openingTime}</p>
         </div>
         {/* Name */}
@@ -52,12 +59,22 @@ const StationSearchCard = ({
         </div>
         {favorite && (
           <>
-            <p
+            <button
               className="cursor-pointer hover:text-green-500 text-sm font-pt w-max"
-              onClick={() => {}}
+              onClick={() => {
+                const message = removeStationFromFavourites(
+                  stationId,
+                  user.user_id
+                );
+                displayNotifications(message);
+                dispatch({
+                  type: "setFavourite",
+                  val: [],
+                });
+              }}
             >
               Remove from favorites
-            </p>
+            </button>
           </>
         )}
         <Link to={`/station/${stationSlug}`}>
@@ -65,9 +82,7 @@ const StationSearchCard = ({
             shade={"blueBig"}
             content={favorite ? "Visit" : "Go to"}
             icon={true}
-            clickFunction={()=> {
-
-            }}
+            clickFunction={() => {}}
           />
         </Link>
       </div>

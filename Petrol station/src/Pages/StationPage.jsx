@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import CustomHeader from "../Layout/CustomHeader";
+// import CustomHeader from "../Layout/CustomHeader";
 import DefaultFooter from "../Layout/DefaultFooter";
 import { useImmerReducer } from "use-immer";
 import ReviewCard from "../Component/Station/ReviewCard";
@@ -37,6 +37,7 @@ import { getStationProfile } from "../Services/station-request";
 import { displayNotifications } from "../Services/helper";
 import { createReview } from "../Services/user-request";
 import { getStationReview } from "../Services/http-request";
+import DefaultHeader from "../Layout/DefaultHeader";
 
 const petrolIcon = new Icon({
   iconUrl: "/src/assets/images/mapicons/petrol-station.png",
@@ -83,6 +84,9 @@ const reduceFunction = (draft, action) => {
       break;
     case "setStationDetails":
       draft.stationDetails = action.val;
+      break;
+    case "setRating":
+      draft.rating = action.val;
       break;
     case "setLoading":
       draft.loading = action.val;
@@ -167,7 +171,7 @@ const StationPage = () => {
         </div>
       ) : (
         <>
-          <CustomHeader />
+          <DefaultHeader />
           <div className="container_limiter mt-8">
             <>
               <section className="">
@@ -588,9 +592,15 @@ const StationPage = () => {
                             alt=""
                             className="w-6 hover:cursor-pointer"
                             onClick={() => {
-                              dispatch({
-                                type: "switch1Star",
-                              });
+                              if (user && user.user_id == 1) {
+                                dispatch({
+                                  type: "switch1Star",
+                                });
+                              } else {
+                                displayNotifications(
+                                  "Login to rate this station"
+                                );
+                              }
                             }}
                           />
                           {/* 2 stars */}
@@ -599,9 +609,15 @@ const StationPage = () => {
                             alt=""
                             className="w-6 hover:cursor-pointer"
                             onClick={() => {
-                              dispatch({
-                                type: "switch2Star",
-                              });
+                              if (user && user.user_id == 1) {
+                                dispatch({
+                                  type: "switch2Star",
+                                });
+                              } else {
+                                displayNotifications(
+                                  "Login to rate this station"
+                                );
+                              }
                             }}
                           />
                           {/* 3 stars */}
@@ -610,9 +626,15 @@ const StationPage = () => {
                             alt=""
                             className="w-6 hover:cursor-pointer"
                             onClick={() => {
-                              dispatch({
-                                type: "switch3Star",
-                              });
+                              if (user && user.user_id == 1) {
+                                dispatch({
+                                  type: "switch3Star",
+                                });
+                              } else {
+                                displayNotifications(
+                                  "Login to rate this station"
+                                );
+                              }
                             }}
                           />
                           {/* 4 stars */}
@@ -621,9 +643,15 @@ const StationPage = () => {
                             alt=""
                             className="w-6 hover:cursor-pointer"
                             onClick={() => {
-                              dispatch({
-                                type: "switch4Star",
-                              });
+                              if (user && user.user_id == 1) {
+                                dispatch({
+                                  type: "switch4Star",
+                                });
+                              } else {
+                                displayNotifications(
+                                  "Login to rate this station"
+                                );
+                              }
                             }}
                           />
                           {/* 5 stars */}
