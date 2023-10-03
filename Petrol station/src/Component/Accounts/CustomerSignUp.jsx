@@ -103,9 +103,36 @@ const CustomerSignUp = () => {
           </ul>
           <div className="md:hidden mt-10 bg-[#E8EAF5] rounded-lg my-4 py-4 px-4">
             <p className="text-center font-pt text-xl">Sign up</p>
-            <div className="flex flex-col pt-5">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                submitForm(e);
+              }}
+              className="flex flex-col pt-5"
+            >
               {/* Name */}
-
+              {/* Username */}
+              <div class="relative mb-5">
+                <input
+                  type="text"
+                  id="email"
+                  class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-500 appearance-none  dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  value={state.userName}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "setUserName",
+                      val: e.target.value,
+                    });
+                  }}
+                />
+                <label
+                  for="email"
+                  class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#E8EAF5] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+                >
+                  Username
+                </label>
+              </div>
               <div class="relative mb-5">
                 <input
                   type="text"
@@ -125,6 +152,27 @@ const CustomerSignUp = () => {
                   class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#E8EAF5] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
                 >
                   Email
+                </label>
+              </div>
+              <div class="relative mb-5">
+                <input
+                  type="text"
+                  id="email"
+                  class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-500 appearance-none  dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  value={state.phone}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "setPhone",
+                      val: e.target.value,
+                    });
+                  }}
+                />
+                <label
+                  for="email"
+                  class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#E8EAF5] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+                >
+                  Phone Number
                 </label>
               </div>
               <div class="relative mb-5">
@@ -159,7 +207,7 @@ const CustomerSignUp = () => {
                   Login
                 </Link>
               </span>
-            </div>
+            </form>
           </div>
         </div>
         {/* right flex */}
