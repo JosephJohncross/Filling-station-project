@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AuthContext from "../Context/AuthContext";
 
@@ -7,11 +7,13 @@ import Button from "../Component/Common/Button";
 import { Link, Navigate } from "react-router-dom";
 import Drawer from "../Component/Common/Drawer";
 import RegularHeader from "./RegularHeader";
+import { setSearchResult } from "../Services/station-request";
 
 const DefaultHeader = ({ hasBg = true, dispatch }) => {
   const { user, logoutUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchTerm, setSearchTerm] = useState();
 
   return (
     <>
@@ -35,14 +37,35 @@ const DefaultHeader = ({ hasBg = true, dispatch }) => {
                   <input
                     name=""
                     type="text"
+                    value={searchTerm}
                     className="border border-gray-400/70  w-full h-10 rounded-sm font-mont text-sm focus:border-uniuyoGreen focus:ring-0 focus:outline-none py-3 text-[#4E4E4E] pl-9 pr-5"
-                    onChange={(e) => {}}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                    }}
                     placeholder="Enter, location, keyword"
                   />
                 </div>
                 <Button
                   shade={"blue"}
-                  clickFunction={() => {}}
+                  clickFunction={() => {
+                    localStorage.setItem("searchTerm", searchTerm);
+                    if (location.pathname === "/search") {
+                      setSearchResult(localStorage.getItem("searchTerm")).then(
+                        (data) => {
+                          dispatch({
+                            type: "searchedStations",
+                            val: data,
+                          });
+                          dispatch({
+                            type: "setLoading",
+                            val: false,
+                          });
+                        }
+                      );
+                      return;
+                    }
+                    navigate("/search");
+                  }}
                   content={"Search"}
                   icon={false}
                 />

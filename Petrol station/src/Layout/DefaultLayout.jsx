@@ -70,7 +70,7 @@ const DefaultLayout = () => {
         <>
           <Outlet />
         </>
-        <DefaultFooter />
+        {/* <DefaultFooter /> */}
       </div>
     </>
   );

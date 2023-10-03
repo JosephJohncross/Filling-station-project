@@ -53,9 +53,9 @@ const StationSearchCard = ({
               <p className="pl-2">Rating</p>
             </div>
           </span>
-          <p className="text-[#D20000]">
+          {/* <p className="text-[#D20000]">
             {hide ? "" : "Log in to see Customer’s reviews"}
-          </p>
+          </p> */}
         </div>
         {favorite && (
           <>
@@ -77,7 +77,7 @@ const StationSearchCard = ({
             </button>
           </>
         )}
-        <Link to={`/station/${stationSlug}`}>
+        <Link to={`/station/${stationId}`}>
           <Button
             shade={"blueBig"}
             content={favorite ? "Visit" : "Go to"}

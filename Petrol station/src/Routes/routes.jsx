@@ -25,7 +25,7 @@ export const CustomRoutes = () => {
     <Route path="/customersignup" element={<CustomerSignUp />} />,
     <Route path="station/:slug" element={<StationPage />} />,
     <Route path="stations" element={<GeneralStationPage />} />,
-    <Route path="search" element={<Search />} />,
+    <Route path="/search" element={<Search />} />,
 
     // User route
     <Route path="user/dashboard" element={<PrivateRoutes />} />,

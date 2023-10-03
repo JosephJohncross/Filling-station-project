@@ -1,18 +1,66 @@
-import React from "react";
+import React, { useEffect } from "react";
 import StationSearchCard from "../Component/Station/StationSearchCard";
 import Button from "../Component/Common/Button";
 import DefaultHeader from "../Layout/DefaultHeader";
+import { setSearchResult } from "../Services/station-request";
+import { useImmerReducer } from "use-immer";
+
+const initalState = {
+  searchStations: [],
+  loading: true,
+};
+
+const reducerFunction = (draft, action) => {
+  switch (action.type) {
+    case "searchedStations":
+      draft.searchStations = action.val;
+      break;
+    case "setLoading":
+      draft.loading = action.val;
+      break;
+  }
+};
 
 const Search = () => {
+  const [state, dispatch] = useImmerReducer(reducerFunction, initalState);
+
+  useEffect(() => {
+    console.log("Hello");
+    setSearchResult(localStorage.getItem("searchTerm")).then((data) => {
+      dispatch({
+        type: "searchedStations",
+        val: data,
+      });
+      dispatch({
+        type: "setLoading",
+        val: false,
+      });
+    });
+  }, []);
+
   return (
     <section className="bg-[#E9E9E9]">
       <div className="sticky top-0 z-50">
-        <DefaultHeader />
+        <DefaultHeader dispatch={dispatch} />
       </div>
-      <div className="mt-10 bg-white pt-10">
-        <div className="container_limiter flex flex-col font-open">
-          <div className="">
-            <form className="my-5 grid gap-7">
+      {state.loading ? (
+        <>
+          <div className="h-screen flex items-center justify-center">
+            <div
+              class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-primary motion-reduce:animate-[spin_1.5s_linear_infinite]"
+              role="status"
+            >
+              <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+                Loading...
+              </span>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="mt-10 bg-white pt-10">
+          <div className="container_limiter flex flex-col font-open">
+            <div className="">
+              {/* <form className="my-5 grid gap-7">
               <div className="grid md:grid-cols-4 gap-4 grid-cols-1">
                 <div class="relative">
                   <select
@@ -92,69 +140,50 @@ const Search = () => {
                   </label>
                 </div>
               </div>
-            </form>
-          </div>
-          <div className="mt-5 overflow-y-hidden flex flex-col gap-y-4 p-3">
-            <h1 className="text-3xl font-bold font-pt">
-              All Filling Stations along Oron Road
-            </h1>
-            <div className="grid md:grid-cols-2 gap-4 grid-cols-1">
-              <StationSearchCard
-                address={"Opposite Timber market Mbierebe."}
-                dieselPrice={""}
-                distance={"1.1 mi"}
-                kerosinePrice={""}
-                name={"Earthwell Filling Station"}
-                openingTime={"8am-9pm"}
-                petrolPrice={""}
-                rating={"4"}
-              />
-              <StationSearchCard
-                address={"Opposite Timber market Mbierebe."}
-                dieselPrice={""}
-                distance={"1.1 mi"}
-                kerosinePrice={""}
-                name={"Earthwell Filling Station"}
-                openingTime={"8am-9pm"}
-                petrolPrice={""}
-                rating={"4"}
-              />
-              <StationSearchCard
-                address={"Opposite Timber market Mbierebe."}
-                dieselPrice={""}
-                distance={"1.1 mi"}
-                kerosinePrice={""}
-                name={"Earthwell Filling Station"}
-                openingTime={"8am-9pm"}
-                petrolPrice={""}
-                rating={"4"}
-              />
-              <StationSearchCard
-                address={"Opposite Timber market Mbierebe."}
-                dieselPrice={""}
-                distance={"1.1 mi"}
-                kerosinePrice={""}
-                name={"Earthwell Filling Station"}
-                openingTime={"8am-9pm"}
-                petrolPrice={""}
-                rating={"4"}
-              />
+            </form> */}
             </div>
-            <div className="flex flex-row justify-between">
-              <Button
-                clickFunction={() => {}}
-                shade="white"
-                content="Go Back"
-              />
-              <Button
-                clickFunction={() => {}}
-                shade="blue"
-                content="See More"
-              />
+            <div className="mt-5 overflow-y-hidden flex flex-col gap-y-4 p-3">
+              {/* <h1 className="text-3xl font-bold font-pt">
+                All Filling Stations along Oron Road
+              </h1> */}
+              <div className="grid md:grid-cols-2 gap-4 grid-cols-1">
+                {
+                  state.searchStations.length > 0 ?  state.searchStations.map(station => {
+                    return (
+                      <StationSearchCard
+                        address={station.address}
+                        dieselPrice={station.diesel_price}
+                        // distance={"1.1 mi"}
+                        kerosinePrice={station.kerosene_price}
+                        name={station.name}
+                        // openingTime={"8am-9pm"}
+                        petrolPrice={station.petrol_price}
+                        rating={station.rating}
+                        clickFunction={()=> {}}
+                        dispatch={dispatch}
+                        stationId={station.user}
+                        stationSlug={station.filling_station_slug}
+
+                      />
+                    )
+                  }) : <>
+                  <div className="items-center w-full flex justify-center  mini:col-span-2">
+                    <p className="">No result to found in search</p>
+                  </div>
+                  </>
+                }
+              </div>
+              {/* <div className="flex flex-row justify-between">
+                <Button
+                  clickFunction={() => {}}
+                  shade="blue"
+                  content="See More"
+                />
+              </div> */}
             </div>
           </div>
         </div>
-      </div>
+      )}
     </section>
   );
 };

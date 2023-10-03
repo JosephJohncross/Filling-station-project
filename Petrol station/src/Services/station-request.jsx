@@ -74,3 +74,16 @@ export const updateFuelProducts = async (
       displayNotifications("Profile update not successful");
     });
 };
+
+// Get All staions
+export const setSearchResult = async (searchTerms) =>
+  axios
+    .get(
+      `https://lgfuel.onrender.com/api/station/search_for_station?search_term=${searchTerms}`
+    )
+    .then((response) => {
+      return response.data.search_result;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
