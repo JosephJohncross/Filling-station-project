@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react'
 import { CustomRoutes } from './Routes/routes';
 import { BrowserRouter, Routes } from "react-router-dom";
 import { AuthProvider } from './Context/AuthContext';
-import { Collapse, initTE } from "tw-elements";
+// import { Collapse, initTE } from "tw-elements";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Sidenav, Collapse, initTE } from "tw-elements";
 
 function App() {
   useEffect(() => {
-    initTE({ Collapse });
+    initTE({ Collapse, Sidenav });
   }, []);
   return (
     <>

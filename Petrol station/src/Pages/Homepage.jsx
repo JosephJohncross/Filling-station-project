@@ -6,6 +6,8 @@ import { useImmerReducer } from "use-immer";
 import DefaultHeader from "../Layout/DefaultHeader";
 // import { Link } from "react-router-dom";
 // import AuthContext from "../Context/AuthContext";
+import { Sidenav, Collapse, initTE } from "tw-elements";
+
 
 import hero from "../../public/hero.svg";
 import Button from "../Component/Common/Button";
@@ -34,6 +36,9 @@ const Homepage = () => {
   // const [lat, setLatitude] = useState(null);
   // const [long, setLongitude] = useState(null);
   const [state, dispatch] = useImmerReducer(reducerFunction, initialState);
+  useEffect(() => {
+    initTE({ Sidenav, Collapse });
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
