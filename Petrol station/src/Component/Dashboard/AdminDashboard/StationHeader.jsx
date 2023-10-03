@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../../Context/AuthContext";
 
@@ -6,10 +6,15 @@ import AuthContext from "../../../Context/AuthContext";
 import Button from "../../Common/Button";
 import { Link, Navigate } from "react-router-dom";
 import Drawer from "../../Common/Drawer";
+import { Collapse, initTE, Sidenav } from "tw-elements";
 
 const StationHeader = ({ hasBg = true, dispatch }) => {
   const { user, logoutUser } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    initTE({ Collapse, Sidenav });
+  }, []);
 
   return (
     <>
