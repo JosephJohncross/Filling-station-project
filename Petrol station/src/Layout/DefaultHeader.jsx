@@ -24,9 +24,17 @@ const DefaultHeader = ({ hasBg = true, dispatch }) => {
     <>
       {/* Navigation bar */}
       <div className={`${hasBg ? "bg-white" : "bg-transparent"} z-10`}>
-        <div className="container_limiter py-4 flex items-center justify-between">
-          <Link to={"/"}>
-            <img src="/logo.svg" alt="" className="w-36" />
+        <div
+          className={`container_limiter py-4 flex items-center ${
+            location.pathname === "/user/dashboard" ? "" : "justify-between"
+          } mini:justify-between`}
+        >
+          <Link to={"/"} className=" mini:block">
+            {location.pathname === "/user/dashboard" ? (
+              ""
+            ) : (
+              <img src="/logo.svg" alt="" className="w-36" />
+            )}
           </Link>
           <div className="items-center space-x-3 font-open hidden ipad:flex">
             {/* Account */}
@@ -207,53 +215,129 @@ const DefaultHeader = ({ hasBg = true, dispatch }) => {
           </div>
           <div className="mini:hidden">
             {user ? (
-              <Drawer
-                content={
-                  <>
-                    <ul className="space-y-3">
-                      <li>
-                        <button
-                          className="flex items-center w-full gap-x-3.5 py-2 px-2.5 text-2xl font-semibold font-pt text-white rounded-md"
-                          onClick={() => {
-                            dispatch({
-                              type: "activePage",
-                              val: "profile",
-                            });
-                          }}
-                        >
-                          My profile
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          className="flex items-center w-full gap-x-3.5 py-2 px-2.5 text-2xl font-semibold font-pt text-white rounded-md"
-                          onClick={() => {
-                            dispatch({
-                              type: "activePage",
-                              val: "favorite",
-                            });
-                          }}
-                        >
-                          Favourite Station
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          className="flex items-center w-full gap-x-3.5 py-2 px-2.5 text-2xl font-semibold font-pt text-white rounded-md"
-                          onClick={() => {
-                            dispatch({
-                              type: "activePage",
-                              val: "notif",
-                            });
-                          }}
-                        >
-                          Notification
-                        </button>
-                      </li>
-                    </ul>
-                  </>
-                }
-              />
+              <div className="flex w-full items-center">
+                {/* Search  */}
+                <div className="flex items-center space-x-2">
+                  <div className="relative w-full ipad:block min-w-[170px] mini:min-w-[300px]">
+                    <img
+                      src="/locator.svg"
+                      alt=""
+                      className="absolute top-1/2 -translate-y-1/2 left-2"
+                    />
+                    <input
+                      name=""
+                      type="text"
+                      value={searchTerm}
+                      className="border border-gray-400/70  w-full h-10 rounded-sm font-mont text-sm focus:border-uniuyoGreen focus:ring-0 focus:outline-none py-3 text-[#4E4E4E] pl-9 pr-5"
+                      onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                      }}
+                      placeholder="Enter, location, keyword"
+                    />
+                  </div>
+                  <Button
+                    shade={"blue"}
+                    clickFunction={() => {
+                      localStorage.setItem("searchTerm", searchTerm);
+                      if (location.pathname === "/search") {
+                        setSearchResult(
+                          localStorage.getItem("searchTerm")
+                        ).then((data) => {
+                          dispatch({
+                            type: "searchedStations",
+                            val: data,
+                          });
+                          dispatch({
+                            type: "setLoading",
+                            val: false,
+                          });
+                        });
+                        return;
+                      }
+                      navigate("/search");
+                    }}
+                    content={"Search"}
+                    icon={false}
+                  />
+                </div>
+                <div className=" w-full">
+                  <div className="flex justify-end">
+                    <Drawer
+                      content={
+                        <>
+                          <ul className="space-y-3">
+                            <li>
+                              <button
+                                className="flex items-center w-full gap-x-3.5 py-2 px-2.5 text-2xl font-semibold font-pt text-white rounded-md"
+                                onClick={() => {
+                                  if (location.pathname === "/user/dashboard") {
+                                    dispatch({
+                                      type: "activePage",
+                                      val: "profile",
+                                    });
+                                  } else {
+                                    if (user.role === 1) {
+                                      navigate("/user/dashboard");
+                                    } else if (user.role === 2) {
+                                      navigate("station/dashboard");
+                                    }
+                                  }
+                                }}
+                              >
+                                My profile
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                className="flex items-center w-full gap-x-3.5 py-2 px-2.5 text-2xl font-semibold font-pt text-white rounded-md"
+                                onClick={() => {
+                                  dispatch({
+                                    type: "activePage",
+                                    val: "favorite",
+                                  });
+                                }}
+                              >
+                                Favourite Station
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                className="flex items-center w-full gap-x-3.5 py-2 px-2.5 text-2xl font-semibold font-pt text-white rounded-md"
+                                onClick={() => {
+                                  if (location.pathname === "/user/dashboard") {
+                                    dispatch({
+                                      type: "activePage",
+                                      val: "notif",
+                                    });
+                                  } else {
+                                    if (user.role === 1) {
+                                      navigate("/user/dashboard");
+                                    } else if (user.role === 2) {
+                                      navigate("station/dashboard");
+                                    }
+                                  }
+                                }}
+                              >
+                                Notification
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                className="flex items-center w-full gap-x-3.5 py-2 px-2.5 text-2xl font-semibold font-pt text-white rounded-md"
+                                onClick={() => {
+                                  logoutUser();
+                                }}
+                              >
+                                Logout
+                              </button>
+                            </li>
+                          </ul>
+                        </>
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
             ) : (
               <>
                 <RegularHeader />

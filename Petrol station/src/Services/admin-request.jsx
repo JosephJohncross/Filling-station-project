@@ -12,7 +12,7 @@ export const createStation = async (
   phoneNumber
 ) =>
   axios
-    .post("https://lgfuel.onrender.com/api/accounts/create_station", {
+    .post("http://127.0.0.1:8000/api/accounts/create_station", {
       email: email,
       password: password,
       license_number: licenseNumber,
@@ -33,7 +33,7 @@ export const createStation = async (
 // Get All staions
 export const getStation = async (stationSlug) =>
   axios
-    .get(`https://lgfuel.onrender.com/api/accounts/get_station/${stationSlug}`)
+    .get(`http://127.0.0.1:8000/api/accounts/get_station/${stationSlug}`)
     .then((response) => {
       return response.data.station;
     })
@@ -44,7 +44,7 @@ export const getStation = async (stationSlug) =>
 // Get All staions
 export const getAllStatiions = async () =>
   axios
-    .get("https://lgfuel.onrender.com/api/accounts/get_stations")
+    .get("http://127.0.0.1:8000/api/accounts/get_stations")
     .then((response) => {
       console.log(response.data.stations);
       return response.data.stations;
@@ -56,7 +56,7 @@ export const getAllStatiions = async () =>
 // Get All staions
 export const getStatistics = async () =>
   axios
-    .get("https://lgfuel.onrender.com/api/accounts/get_statistics")
+    .get("http://127.0.0.1:8000/api/accounts/get_statistics")
     .then((response) => {
       console.log(response.data.statistics);
       return response.data.statistics;
@@ -68,7 +68,7 @@ export const getStatistics = async () =>
 // Get all users
 export const geAllUsers = async () =>
   axios
-    .get("https://lgfuel.onrender.com/api/accounts/get_users")
+    .get("http://127.0.0.1:8000/api/accounts/get_users")
     .then((response) => {
       // console.log(response.data.users);
       return response.data.users;
@@ -80,7 +80,7 @@ export const geAllUsers = async () =>
 // Create station - Admin/Signup page
 export const verifyStation = async (userId) =>
   axios
-    .patch(`https://lgfuel.onrender.com/api/station/verify_station/${userId}`, {
+    .patch(`http://127.0.0.1:8000/api/station/verify_station/${userId}`, {
       user: userId,
     })
     .then((response) => {
@@ -95,7 +95,7 @@ export const verifyStation = async (userId) =>
 // Delete station
 export const deleteStation = async (stationId) =>
   axios
-    .delete(`https://lgfuel.onrender.com/api/accounts/delete_station`, {
+    .delete(`http://127.0.0.1:8000/api/accounts/delete_station`, {
       station_id: stationId,
     })
     .then((response) => {
