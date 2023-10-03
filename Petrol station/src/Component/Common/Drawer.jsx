@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Sidenav, initTE } from "tw-elements";
 
 const Drawer = ({ content }) => {
+  useEffect(() => {
+    initTE({ Sidenav });
+  }, []);
+
   return (
     <>
       {/* Navigation Toggle  */}
@@ -34,14 +39,14 @@ const Drawer = ({ content }) => {
       >
         <div className="px-6 pb-10">
           <Link to="/">
-            <img src="/logoLight.svg" alt="" className="w-36"/>
+            <img src="/logoLight.svg" alt="" className="w-36" />
           </Link>
         </div>
         <nav
           className="hs-accordion-group p-6 w-full flex flex-col flex-wrap"
           data-hs-accordion-always-open
         >
-          {content}          
+          {content}
         </nav>
       </div>
     </>
