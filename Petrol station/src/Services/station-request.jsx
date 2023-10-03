@@ -3,12 +3,12 @@ import { displayNotifications } from "./helper";
 
 export const setStationOpenStatus = (openStatus, userId) =>
   axios
-    .patch("http://127.0.0.1:8000/api/station/set_open_status", {
+    .patch("https://lgfuel.onrender.com/api/station/set_open_status", {
       is_open: openStatus,
       user: userId,
     })
     .then((response) => {
-      displayNotifications("Department created successfuly");
+      displayNotifications("Status set");
       return response.data;
     })
     .catch((error) => {
@@ -18,7 +18,7 @@ export const setStationOpenStatus = (openStatus, userId) =>
 export const getStationProfile = async (stationId) =>
   axios
     .get(
-      `http://127.0.0.1:8000/api/accounts/get_station_dashboard_profile/${stationId}`
+      `https://lgfuel.onrender.com/api/accounts/get_station_dashboard_profile/${stationId}`
     )
     .then((response) => {
       // console.log(response.data.stations);
@@ -33,15 +33,17 @@ export const updateStationProfile = async (
   name,
   operationTime,
   phone,
-  userId
+  userId,
+  address
 ) => {
   // console.log(dateOfBirth)
   axios
-    .patch("http://127.0.0.1:8000/api/station/update_station_profile", {
+    .patch("https://lgfuel.onrender.com/api/station/update_station_profile", {
       name: name,
       operation_time: operationTime,
       phone: phone,
       user_id: userId,
+      address: address,
     })
     .then(() => {
       displayNotifications("Profile update successful");
@@ -59,7 +61,7 @@ export const updateFuelProducts = async (
 ) => {
   // console.log(dateOfBirth)
   axios
-    .patch("http://127.0.0.1:8000/api/station/update_fuel_products", {
+    .patch("https://lgfuel.onrender.com/api/station/update_fuel_products", {
       petrol_price: petrolPrice,
       kerosene_price: kerosenePrice,
       diesel_price: dieselPrice,

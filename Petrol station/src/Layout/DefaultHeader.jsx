@@ -79,6 +79,13 @@ const DefaultHeader = ({ hasBg = true, dispatch }) => {
                     <p
                       className="text-sm font-open cursor-pointer"
                       onClick={() => {
+                        if (user.role == 1) {
+                          navigate("/user/dashboard");
+                        } else if (user.role == 0) {
+                          navigate("/admin/dashboard");
+                        } else if (user.role == 2) {
+                          navigate("/station/dashboard");
+                        }
                         dispatch({
                           type: "activePage",
                           val: "profile",

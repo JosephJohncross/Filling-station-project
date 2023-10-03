@@ -50,8 +50,8 @@ const Homepage = () => {
           const { latitude, longitude } = position.coords;
           // localStorage.setItem('latitude', latitude)
           // localStorage.setItem('longitude', longitude)
-          localStorage.setItem('latitude', 7.9122)
-          localStorage.setItem('longitude', 5.0116)
+          localStorage.setItem("latitude", latitude);
+          localStorage.setItem("longitude", longitude);
           // getStationInMyLocation(7.9122, 5.0116);
         },
         (error) => {
@@ -67,7 +67,7 @@ const Homepage = () => {
 
   return (
     <>
-      <DefaultHeader />
+      <DefaultHeader dispatch={dispatch} />
       {/* Hero section */}
       <div
         className="backdrop-brightness-50"
@@ -96,7 +96,7 @@ const Homepage = () => {
               onClick={() => {
                 getCurrentLocation();
                 navigate("stations");
-                
+
                 // displayNotifications(`${state.latitude} ${state.longitude}`);
               }}
             >

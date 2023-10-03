@@ -4,23 +4,87 @@ import searchImg from "../../public/searchpage.svg";
 import StationSearchCard from "../Component/Station/StationSearchCard";
 import { displayNotifications } from "../Services/helper";
 import { getStationInMyLocation } from "../Services/http-request";
+import axios from "axios";
+import LocationSearchCard from "../Component/Station/LocationSearchCard";
 
 const GeneralStationPage = () => {
   const [loading, setLoading] = useState(true);
   const [stations, setStations] = useState([]);
+  const [gasStations, setGasStations] = useState([]);
 
   useEffect(() => {
     const latitude = localStorage.getItem("latitude");
     const longitude = localStorage.getItem("longitude");
+
     if (!latitude || !longitude) {
       displayNotifications("Error getting your location");
     } else {
-      getStationInMyLocation(latitude, longitude).then((stations) => {
-        setStations(stations);
+      const apiKey = "odp8-Gh06P70UiqBrgwwB5UY1TOs9Er8we5WJayMZ4I";
+      // 5.027305545712547, 7.9793645824989605
+      // const apiUrl = `https://places.ls.hereapi.com/places/v1/discover/search?at=${latitude},${longitude}&apiKey=${apiKey}`;
+      const apiUrl = `https://browse.search.hereapi.com/v1/browse?at=${5.027305545712547},${7.9793645824989605}&limit=10&categories=700-7600-0000,700-7600-0116&apiKey=${apiKey}`;
+      getStationsAround(apiUrl).then((gasStationsResponse) => {
+        setStations(gasStationsResponse.items);
         setLoading(false);
       });
     }
   }, []);
+
+  const getStationsAround = async (apiUrl) =>
+    // getStationInMyLocation(latitude, longitude).then((stations) => {
+    //   setStations(stations);
+    //   setLoading(false);
+    // });
+    // MAp  box gas location features
+    // const accessToken =
+    //   "pk.eyJ1Ijoiam9obmNyb3NzMTExMSIsImEiOiJja3o2Y2drNXYwYWNwMzFtdWRuaHMzZHY3In0.5vG_szCwqftIM7q_HJ1pBA";
+    // const geocodingUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+    //   `${latitude},${longitude}`
+    // )}.json?access_token=${accessToken}`;
+    // const response = await axios.get(geocodingUrl);
+    // // console.log(response.data);
+    // // Extract the coordinates (longitude and latitude) from the response
+    // const coordinates = response.data.features[0].geometry.coordinates;
+    // console.log({ Coordinates: coordinates });
+    // // Use the coordinates to search for gas stations
+    // const gasStationsUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/gas_station.json?access_token=${accessToken}&proximity=${coordinates[0]},${coordinates[1]}`;
+    // const gasStationsResponse = await axios.get(gasStationsUrl);
+    // return gasStationsResponse;
+    // Here API service
+    axios
+      .get(apiUrl)
+      .then((response) => {
+        // console.log(response.data);
+        // const gasStation = response.data;
+        return response.data;
+      })
+      .catch((error) => console.log(error));
+
+  // Four square api service
+  // const apiKey = "fsq3WPuR3oIAJ31U6rZohvfCyqd75rzK8hBPaxvPJY0Qiqk=";
+  // try {
+  //   const searchParams = new URLSearchParams({
+  //     query: "fuel",
+  //     ll: "5.0272307327704295,7.979332395992905",
+  //     categoryId: "4bf58dd8d48988d113951735",
+  //     // open_now: 'true',
+  //     sort: "DISTANCE",
+  //   });
+  //   const results = await fetch(
+  //     `https://api.foursquare.com/v3/places/search?${searchParams}`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         Accept: "application/json",
+  //         Authorization: apiKey,
+  //       },
+  //     }
+  //   );
+  //   const data = await results.json();
+  //   return data;
+  // } catch (err) {
+  //   console.error(err);
+  // }
 
   return (
     <>
@@ -55,24 +119,19 @@ const GeneralStationPage = () => {
           <div className="container_limiter h-[100vh] overflow-hidden flex justify-center">
             <div className="flex flex-col gap-y-2 items-center max-w-xl overflow-y-scroll dashboard_scroll px-3 mb-24">
               <div className="bg-primColor rounded-tl-lg rounded-tr-lg w-full px-8 py-4 font-pt text-white text-center text-xl">
-                Showing Filling stations within 4km radius closest to you
+                Showing Filling based on your location
               </div>
               {stations.length > 0
                 ? stations.map((station) => {
+                    // console.log(station.position);
                     return (
-                      <StationSearchCard
-                        address={station.address}
-                        clickFunction={() => {}}
-                        dieselPrice={station.diesel_price}
-                        distance={station.distance_km ? station.distance_km.toFixed(3)+"km" : "*km"}
-                        kerosinePrice={station.kerosene_price}
-                        petrolPrice={station.petrol_price}
-                        openingTime={"12-3pm"}
-                        rating={
-                          station.rating ? station.rating : "No rating yet"
-                        }
-                        name={station.name}
-                        stationSlug={station.user}
+                      <LocationSearchCard
+                        city={station.address.city}
+                        county={station.address.county}
+                        distance={+station.distance / 1000}
+                        title={station.title}
+                        latitude={station.position.lat}
+                        longitude={station.position.lng}
                       />
                     );
                   })

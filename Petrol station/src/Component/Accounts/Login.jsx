@@ -51,7 +51,7 @@ const Login = () => {
   const submitForm = async (e) => {
     e.preventDefault();
     let loginResponse = await loginUser(e);
-    displayNotifications(loginResponse)
+    displayNotifications(loginResponse);
   };
 
   return (
@@ -75,43 +75,63 @@ const Login = () => {
             <li>and many more...</li>
           </ul>
           <div className="md:hidden mt-10 bg-[#E8EAF5] rounded-lg my-4 py-4 px-4">
-            <p className="text-center font-pt text-xl">Sign in</p>
-            <div className="flex flex-col pt-5">
-              {/* Name */}
-              <div class="relative mb-5">
-                <input
-                  type="text"
-                  id="name"
-                  class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-500 appearance-none  dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  placeholder=" "
-                />
-                <label
-                  htmlFor="name"
-                  class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#E8EAF5] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
-                >
-                  Name
-                </label>
-              </div>
+            <div className="flex flex-col justify-center">
+              <p className="text-center font-pt text-xl">Sign in</p>
+              <span className="text-sm flex space-x-1 justify-center">
+                <p className="">Don't have an account? </p>
+                <Link to={"/signup"} className="font-medium text-primColor">
+                  Sign up
+                </Link>
+              </span>
+            </div>
+            <form
+              onSubmit={(e) => {
+                submitForm(e);
+              }}
+              className="flex flex-col pt-5"
+            >
+              {/* Email               */}
               <div class="relative mb-5">
                 <input
                   type="text"
                   id="email"
+                  name="email"
                   class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-500 appearance-none  dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
+                  onChange={(e) => {
+                    dispatch({
+                      type: "changedEmail",
+                      email: e.target.value,
+                      error:
+                        e.target.value == "" ? "Email must not be blank" : "",
+                    });
+                  }}
                 />
                 <label
                   htmlFor="email"
                   class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#E8EAF5] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
                 >
-                  Email/Phone Number
+                  Email
                 </label>
               </div>
+              {/* password */}
               <div class="relative mb-3">
                 <input
-                  type="text"
+                  type="password"
                   id="password"
+                  name="password"
                   class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-500 appearance-none  dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
+                  onChange={(e) => {
+                    dispatch({
+                      type: "changedPassword",
+                      password: e.target.value,
+                      error:
+                        e.target.value == ""
+                          ? "Password field must not be blank"
+                          : "",
+                    });
+                  }}
                 />
                 <label
                   htmlFor="password"
@@ -123,7 +143,11 @@ const Login = () => {
               <span className="text-end text-xs font-medium mb-6">
                 <p>Forgot password?</p>
               </span>
-              <Button shade={"blue"} content={"Login"} />
+              <Button
+                shade={"blue"}
+                content={"Login"}
+                clickFunction={() => {}}
+              />
               <span className="text-center text-xs mt-4 mb-8">
                 Not a member?
                 <Link
@@ -134,13 +158,21 @@ const Login = () => {
                   Sign Up
                 </Link>
               </span>
-            </div>
+            </form>
           </div>
         </div>
         {/* Right Side */}
         <div className="right md:w-2/3 hidden md:flex items-center bg-[#E8EAF5]">
           <div className="md:block flex flex-col justify-center px-24 w-full">
-            <h1 className="text-5xl font-bold font-pt">Sign in</h1>
+            <div className="md:w-2/3 flex justify-between">
+              <h1 className="text-5xl font-bold font-pt">Sign in</h1>
+              <span className="flex space-x-2 items-center">
+                <p className="">Don't have an account yet?</p>
+                <Link to={"/signup"} className="font-medium text-primColor">
+                  Sign up
+                </Link>
+              </span>
+            </div>
             <form
               className="my-7 "
               onSubmit={(e) => {

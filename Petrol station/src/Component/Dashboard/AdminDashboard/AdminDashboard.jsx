@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { useImmerReducer } from "use-immer";
 import ButtonCapsule from "./ButtonCapsule";
 import AuthContext from "../../../Context/AuthContext";
+import { Link } from "react-router-dom";
 
 // image import
 import logo from "../../../assets/images/logo.svg";
@@ -24,6 +25,7 @@ import {
 
 // Http request import
 import { createStation } from "../../../Services/admin-request";
+import StationHeader from "./StationHeader";
 
 // Reducer function
 const reducerFunction = (draft, action) => {
@@ -255,15 +257,13 @@ const AdminDashboard = () => {
         )}
         <div className="ipad:grid admin__layout h-full w-full">
           {/* Logo */}
-          <div className="py-5 bg-white flex justify-center items-center  ">
-            <img src={logo} alt="logo" className="w-20" />
+          <div className="">
+            <StationHeader dispatch={dispatch} />
           </div>
 
           {/* Right side of header */}
           {/* Notification */}
-          <div className=" bg-white flex justify-end items-center mini:px-10 mini:pr-16">
-            There
-          </div>
+          <div className=" bg-white flex justify-end items-center mini:px-10 mini:pr-16"></div>
 
           {/* Side navigation */}
           <div className="bg-white  pt-12 hidden ipad:block">
@@ -424,9 +424,9 @@ const AdminDashboard = () => {
                       </div>
                     </div>
                     {/* Chart */}
-                    <div className="pt-10 border border-black mt-14 mini:mt-16 mini:w-1/2">
+                    {/* <div className="pt-10 border border-black mt-14 mini:mt-16 mini:w-1/2">
                       <Histogram />
-                    </div>
+                    </div> */}
                   </div>
                 </>
               )}
@@ -434,9 +434,7 @@ const AdminDashboard = () => {
               {state.activeTab === "up" && (
                 <>
                   <div className="dashboard_limiter mt-8 flex flex-col gap-y-9 mini:flex-row mini:justify-between mini:gap-x-16">
-                    <form
-                      className="mini:w-1/2 rounded-lg px-5 shadow-rounded-md mini:px-7 pt-6"
-                    >
+                    <form className="mini:w-1/2 rounded-lg px-5 shadow-rounded-md mini:px-7 pt-6">
                       {/* Fuel Product update */}
                       <h3 className="font-pt text-lg mb-8">Fuel Product</h3>
                       {/* Petrol input */}
@@ -525,7 +523,7 @@ const AdminDashboard = () => {
                     >
                       <div className="">
                         <h3 className="font-pt text-lg mb-8">
-                          Station Amenities
+                          Station Services
                         </h3>
 
                         <div className="flex flex-col space-y-7">
@@ -616,6 +614,18 @@ const AdminDashboard = () => {
                           </span>{" "}
                           | {state.operationTime}
                         </p>
+                        <div className="mt-7">
+                          <button
+                            className=" bg-primColor hover:bg-primColor/80 text-white border border-transparent w-max transition-colors rounded-full rounded-tl-none p-1 px-3 flex space-x-3 items-center cursor-point"
+                            onClick={(e) => {
+                              e.preventDefault();
+                            }}
+                          >
+                            <p className="font-semibold font-open">
+                              Update station Image
+                            </p>
+                          </button>
+                        </div>
                       </div>
                       {/* Right flex */}
                       <div className="w-full mini:w-1/2 mini:pl-4">
@@ -623,9 +633,7 @@ const AdminDashboard = () => {
                           Update profile
                         </h3>
                         {/* Input fields */}
-                        <form
-                          className="pt-8"
-                        >
+                        <form className="pt-8">
                           {/* Station name */}
                           <div className="space-y-2 mb-7">
                             <label
@@ -725,7 +733,8 @@ const AdminDashboard = () => {
                                   state.name,
                                   state.operationTime,
                                   state.phone,
-                                  user.user_id
+                                  user.user_id,
+                                  state.address
                                 );
                               }}
                             >

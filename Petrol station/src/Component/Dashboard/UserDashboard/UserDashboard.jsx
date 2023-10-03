@@ -9,6 +9,7 @@ import DefaultHeader from "../../../Layout/DefaultHeader";
 import {
   getUserFavouriteStation,
   getUserProfile,
+  updateUserProfile,
 } from "../../../Services/user-request";
 
 const reducerFunction = (draft, action) => {
@@ -29,6 +30,15 @@ const reducerFunction = (draft, action) => {
     case "setFavourite":
       draft.favourite = action.val;
       break;
+    case "setPhone":
+      draft.phone = action.val;
+      break;
+    case "setUsername":
+      draft.username = action.val;
+      break;
+    case "setAvatar":
+      draft.username = action.val;
+      break;
   }
 };
 
@@ -38,6 +48,9 @@ const initialState = {
   loading: true,
   userProfile: {},
   favourite: [],
+  phone: "",
+  username: "",
+  avatar: "",
 };
 
 const UserDashboard = () => {
@@ -68,9 +81,18 @@ const UserDashboard = () => {
 
     // Gets user profile
     getUserProfile(user.user_id).then((response) => {
+      console.log(response);
       dispatch({
         type: "setUserProfile",
         val: response,
+      });
+      dispatch({
+        type: "setPhone",
+        val: response?.phone,
+      });
+      dispatch({
+        type: "setUsername",
+        val: response?.username,
       });
       dispatch({
         type: "setLoading",
@@ -200,44 +222,67 @@ const UserDashboard = () => {
                   {state.activeProfileSection === "edit" && (
                     <>
                       <div className="fles flex-col space-y-5">
-                        {/* Name */}
-                        <div className="flex space-x-4 items-center">
-                          <label className="font-pt text-textColor text-lg  w-1/4">
-                            Name
-                          </label>
-                          <input
-                            id="petrol_price"
-                            type="text"
-                            name="petrol_price"
-                            className="w-3/4 outline-none  focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 rounded-lg p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
-                          />
-                        </div>
                         {/* Email */}
-                        {/* <div className="flex space-x-4 items-center">
+                        <div className="flex space-x-4 items-center">
                           <label className="font-pt text-textColor text-lg  w-1/4">
                             Email
                           </label>
                           <input
+                            value={user.email}
+                            disabled
+                            id="email"
+                            type="email"
+                            name="email"
+                            className="w-3/4 cursor-not-allowed outline-none  focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 rounded-lg p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                          />
+                        </div>
+                        {/* Name */}
+                        <div className="flex space-x-4 items-center">
+                          <label className="font-pt text-textColor text-lg  w-1/4">
+                            Username
+                          </label>
+                          <input
+                            value={state.username}
+                            onChange={(e) => {
+                              dispatch({
+                                type: "setUsername",
+                                val: e.target.value,
+                              });
+                            }}
                             id="petrol_price"
                             type="text"
                             name="petrol_price"
-                            className="w-3/4 outline-none  focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 rounded-lg p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                            className="w-3/4 outline-none  focus:outline-none focus:ring-0 focus:border-primColor border border-gray-500 rounded-lg p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
                           />
-                        </div> */}
+                        </div>
                         {/* Phone Number */}
                         <div className="flex space-x-4 items-center">
                           <label className="font-pt text-textColor text-lg  w-1/4">
                             Phone Number
                           </label>
                           <input
+                            value={state.phone}
+                            onChange={(e) => {
+                              dispatch({
+                                type: "setPhone",
+                                val: e.target.value,
+                              });
+                            }}
                             type="text"
-                            name="petrol_price"
-                            className="w-3/4 outline-none  focus:outline-none focus:ring-0 focus:border-primColor border border-gray-300 rounded-lg p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
+                            name="phone"
+                            className="w-3/4 outline-none  focus:outline-none focus:ring-0 focus:border-primColor border border-gray-500 rounded-lg p-2 ring-0 relative after:absolute after:content-[Litre] after:top-0 after:right-2"
                           />
                         </div>
                         <div className="pt-8 flex justify-end space-x-2">
                           <Button
-                            clickFunction={() => {}}
+                            clickFunction={() => {
+                              updateUserProfile(
+                                state.username,
+                                state.avatar,
+                                state.phone,
+                                user.user_id
+                              );
+                            }}
                             content={"Update"}
                             shade={"blue"}
                             icon={false}

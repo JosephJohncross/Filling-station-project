@@ -18,6 +18,9 @@ import {
   createStation,
   getAllStatiions,
   getStatistics,
+  geAllUsers,
+  verifyStation,
+  deleteStation,
 } from "../../../Services/admin-request";
 import AuthContext from "../../../Context/AuthContext";
 import { Collapse, initTE } from "tw-elements";
@@ -47,6 +50,9 @@ const reducerFunction = (draft, action) => {
       break;
     case "setStations":
       draft.stations = action.stations;
+      break;
+    case "setUsers":
+      draft.users = action.users;
       break;
     case "setVerifiedStations":
       draft.verifiedStations = action.verified;
@@ -103,6 +109,9 @@ const reducerFunction = (draft, action) => {
     case "openDeleteModal":
       draft.openDeleteModal = action.val;
       break;
+    case "setStationReload":
+      draft.stationReload = action.val;
+      break;
   }
 };
 
@@ -112,7 +121,7 @@ const initialState = {
   stations: [],
   verifiedStations: [],
   pendingVerification: [],
-  users: [...userDummyData],
+  users: [],
   stationId: "",
   stationName: "",
   stationEmail: "",
@@ -121,6 +130,7 @@ const initialState = {
   stationLongitude: "",
   stationPassword: "",
   forceReload: false,
+  stationReload: false,
   stats: null,
 
   // Modal
@@ -165,7 +175,37 @@ const SuperAdminDashboard = () => {
         });
       });
     }
+    if (state.activeBody == "users") {
+      geAllUsers().then((data) => {
+        dispatch({ type: "setUsers", users: data });
+      });
+    }
   }, [state.activeBody]);
+
+  useEffect(() => {
+    // console.log("hello");
+    getStatistics().then((data) => {
+      dispatch({ type: "setStatistics", stats: data });
+    });
+    if (state.activeBody === "pendingS") {
+      getAllStatiions().then((data) => {
+        console.log("heelo");
+        dispatch({ type: "setStations", stations: data });
+        dispatch({
+          type: "setVerifiedStations",
+          verified: [...state.stations].filter((station) => {
+            return station.is_verified;
+          }),
+        });
+        dispatch({
+          type: "setVerifiedStations",
+          pending: [...state.stations].filter((station) => {
+            return station.is_verified;
+          }),
+        });
+      });
+    }
+  }, [state.stationReload]);
 
   return (
     <>
@@ -270,7 +310,56 @@ const SuperAdminDashboard = () => {
           {/* Mobile version */}
           <div className="px-4 flex justify-between items-center mini:hidden shadow-md">
             <div className="flex items-center">
-              <Drawer />
+              <Drawer
+                content={
+                  <>
+                    <ul className="space-y-3">
+                      <li>
+                        <button
+                          className="flex items-center w-full gap-x-3.5 py-2 px-2.5 text-2xl font-semibold font-pt text-white rounded-md"
+                          onClick={() => {
+                            dispatch({
+                              type: "switchDashboard",
+                            });
+                          }}
+                        >
+                          Dashboard
+                        </button>
+                      </li>
+                      <li className="flex items-center">
+                        <button
+                          className="flex items-center w-full gap-x-3.5 py-2 px-2.5 text-2xl font-semibold font-pt text-white rounded-md"
+                          onClick={() => {
+                            dispatch({
+                              type: "switchUpdates",
+                            });
+                          }}
+                        >
+                          Filling station
+                        </button>
+                        <img
+                          className="w-4 h-4"
+                          src="https://img.icons8.com/ios-glyphs/30/ffffff/sort-down.png"
+                          alt="sort-down"
+                        />
+                      </li>
+                      <li>
+                        <button
+                          className="flex items-center w-full gap-x-3.5 py-2 px-2.5 text-2xl font-semibold font-pt text-white rounded-md"
+                          onClick={() => {
+                            dispatch({
+                              type: "switchProfile",
+                              val: "notif",
+                            });
+                          }}
+                        >
+                          Users
+                        </button>
+                      </li>
+                    </ul>
+                  </>
+                }
+              />
               {/* logo */}
               <div className="py-5 bg-white mini:flex justify-center items-center">
                 <img src="/logo.svg" alt="logo" className="w-28" />
@@ -722,7 +811,9 @@ const SuperAdminDashboard = () => {
                             Number of registered users
                           </p>
                           {/* Number */}
-                          <p className="font-pt  text-xl">190,500</p>
+                          <p className="font-pt  text-xl">
+                            {state.stats?.all_users}
+                          </p>
                           <p className="font-pt text-gray-400">In 245 days</p>
                         </div>
                         <div
@@ -1154,7 +1245,7 @@ const SuperAdminDashboard = () => {
                                   </td>
                                   <td className="px-6 py-4 text-start font-bold text-xl hs-dropdown relative">
                                     <div className="hs-dropdown-toggle">
-                                      <p className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline hs-dropdown-toggle">
+                                      <p className="cursor-pointer font-medium text-blue-600 hover:underline hs-dropdown-toggle">
                                         ...
                                       </p>
                                     </div>
@@ -1163,9 +1254,18 @@ const SuperAdminDashboard = () => {
                                       class="hs-dropdown-menu space-y-4 absolute right-0 px-4 py-3 shadow-md rounded-md transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 w-max hidden z-10 mt-2 min-w-[6rem] bg-white"
                                       aria-labelledby="hs-dropdown-unstyled"
                                     >
-                                      <p className="text-sm font-open">
+                                      <button
+                                        onClick={() => {
+                                          deleteStation(station.id);
+                                          dispatch({
+                                            type: "setStationReload",
+                                            val: !state.stationReload,
+                                          });
+                                        }}
+                                        className="text-sm font-open"
+                                      >
                                         Delete
-                                      </p>
+                                      </button>
                                     </div>
                                   </td>
                                 </tr>
@@ -1297,13 +1397,25 @@ const SuperAdminDashboard = () => {
                                   >
                                     <button
                                       className="text-sm font-open block"
-                                      onClick={() => {}}
+                                      onClick={() => {
+                                        verifyStation(station.user);
+                                        dispatch({
+                                          type: "setStationReload",
+                                          val: !state.stationReload,
+                                        });
+                                      }}
                                     >
                                       Verify
                                     </button>
                                     <button
                                       className="text-sm font-open"
-                                      onClick={() => {}}
+                                      onClick={() => {
+                                        deleteStation(station.id);
+                                        dispatch({
+                                          type: "setStationReload",
+                                          val: !state.stationReload,
+                                        });
+                                      }}
                                     >
                                       Delete
                                     </button>
@@ -1322,7 +1434,7 @@ const SuperAdminDashboard = () => {
                 <>
                   <div className="mini:px-8 my-5">
                     <p className="font-bold font-pt text-textColor text-xl mb-8">
-                      List of User(180)
+                      List of User({state.stats?.all_users})
                     </p>
                     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -1333,7 +1445,7 @@ const SuperAdminDashboard = () => {
                             </th>
                             <th scope="col" class="px-6 py-3">
                               <div className="flex items-center">
-                                Name
+                                Username
                                 <a href="#">
                                   <svg
                                     className="w-3 h-3 ml-1.5"
@@ -1389,6 +1501,7 @@ const SuperAdminDashboard = () => {
                         </thead>
                         <tbody>
                           {state.users.map((station, index) => {
+                            console.log(station);
                             return (
                               <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
                                 <th
@@ -1397,9 +1510,11 @@ const SuperAdminDashboard = () => {
                                 >
                                   {index + 1}
                                 </th>
-                                <td className="px-6 py-4">{station.name}</td>
                                 <td className="px-6 py-4">
-                                  {station.dateRegistered}
+                                  {station?.username}
+                                </td>
+                                <td className="px-6 py-4">
+                                  {formatDate(station.created_at)}
                                 </td>
                                 <td className="px-6 py-4">{station.phone}</td>
                                 <td className="px-6 py-4">{station.email}</td>
