@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AuthContext from "../Context/AuthContext";
 
@@ -8,12 +8,17 @@ import { Link, Navigate } from "react-router-dom";
 import Drawer from "../Component/Common/Drawer";
 import RegularHeader from "./RegularHeader";
 import { setSearchResult } from "../Services/station-request";
+import { Sidenav, Collapse, initTE } from "tw-elements";
 
 const DefaultHeader = ({ hasBg = true, dispatch }) => {
   const { user, logoutUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState();
+
+  useEffect(() => {
+    initTE({ Sidenav, Collapse });
+  }, []);
 
   return (
     <>

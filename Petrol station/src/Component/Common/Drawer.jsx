@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Sidenav, initTE } from "tw-elements";
+import { Sidenav, Collapse, initTE } from "tw-elements";
 
 const Drawer = ({ content }) => {
   useEffect(() => {
-    initTE({ Sidenav });
+    initTE({ Sidenav, Collapse });
   }, []);
 
   return (
