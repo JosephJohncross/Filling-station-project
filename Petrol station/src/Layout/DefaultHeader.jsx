@@ -1,15 +1,17 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AuthContext from "../Context/AuthContext";
 
 // image import
 import Button from "../Component/Common/Button";
 import { Link, Navigate } from "react-router-dom";
 import Drawer from "../Component/Common/Drawer";
+import RegularHeader from "./RegularHeader";
 
 const DefaultHeader = ({ hasBg = true, dispatch }) => {
   const { user, logoutUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <>
@@ -176,53 +178,59 @@ const DefaultHeader = ({ hasBg = true, dispatch }) => {
             )}
           </div>
           <div className="mini:hidden">
-            <Drawer
-              content={
-                <>
-                  <ul className="space-y-3">
-                    <li>
-                      <button
-                        className="flex items-center w-full gap-x-3.5 py-2 px-2.5 text-2xl font-semibold font-pt text-white rounded-md"
-                        onClick={() => {
-                          dispatch({
-                            type: "activePage",
-                            val: "profile",
-                          });
-                        }}
-                      >
-                        My profile
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        className="flex items-center w-full gap-x-3.5 py-2 px-2.5 text-2xl font-semibold font-pt text-white rounded-md"
-                        onClick={() => {
-                          dispatch({
-                            type: "activePage",
-                            val: "favorite",
-                          });
-                        }}
-                      >
-                        Favourite Station
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        className="flex items-center w-full gap-x-3.5 py-2 px-2.5 text-2xl font-semibold font-pt text-white rounded-md"
-                        onClick={() => {
-                          dispatch({
-                            type: "activePage",
-                            val: "notif",
-                          });
-                        }}
-                      >
-                        Notification
-                      </button>
-                    </li>
-                  </ul>
-                </>
-              }
-            />
+            {user ? (
+              <Drawer
+                content={
+                  <>
+                    <ul className="space-y-3">
+                      <li>
+                        <button
+                          className="flex items-center w-full gap-x-3.5 py-2 px-2.5 text-2xl font-semibold font-pt text-white rounded-md"
+                          onClick={() => {
+                            dispatch({
+                              type: "activePage",
+                              val: "profile",
+                            });
+                          }}
+                        >
+                          My profile
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          className="flex items-center w-full gap-x-3.5 py-2 px-2.5 text-2xl font-semibold font-pt text-white rounded-md"
+                          onClick={() => {
+                            dispatch({
+                              type: "activePage",
+                              val: "favorite",
+                            });
+                          }}
+                        >
+                          Favourite Station
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          className="flex items-center w-full gap-x-3.5 py-2 px-2.5 text-2xl font-semibold font-pt text-white rounded-md"
+                          onClick={() => {
+                            dispatch({
+                              type: "activePage",
+                              val: "notif",
+                            });
+                          }}
+                        >
+                          Notification
+                        </button>
+                      </li>
+                    </ul>
+                  </>
+                }
+              />
+            ) : (
+              <>
+                <RegularHeader />
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -13,7 +13,7 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
         headers: {
-          Referer: 'http://127.0.0.1:8000',
+          Referer: 'http://http://127.0.0.1:8000',
           'Access-Control-Allow-Origin': '*', // Add this line
           'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept', // Add this line
         },

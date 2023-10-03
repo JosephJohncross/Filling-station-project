@@ -22,6 +22,7 @@ import {
   updateFuelProducts,
   updateStationProfile,
 } from "../../../Services/station-request";
+import { Collapse, initTE, Sidenav } from "tw-elements";
 
 // Http request import
 import { createStation } from "../../../Services/admin-request";
@@ -215,6 +216,10 @@ const AdminDashboard = () => {
       });
       // console.log(data);
     });
+  }, []);
+
+  useEffect(() => {
+    initTE({ Collapse, Sidenav });
   }, []);
 
   // const submitProfileForm = () => {

@@ -3,7 +3,7 @@ import { displayNotifications } from "./helper";
 
 export const createReview = async (user, station, review) => {
   axios
-    .post("https://lgfuel.onrender.com/api/review/create_review", {
+    .post("http://127.0.0.1:8000/api/review/create_review", {
       user: user,
       station: station,
       review: review,
@@ -18,7 +18,7 @@ export const createReview = async (user, station, review) => {
 
 export const rateStation = (stationId, rating) =>
   axios
-    .patch("https://lgfuel.onrender.com/api/station/give_rating", {
+    .patch("http://127.0.0.1:8000/api/station/give_rating", {
       station_id: stationId,
       rating: rating,
     })
@@ -27,7 +27,7 @@ export const rateStation = (stationId, rating) =>
 
 export const getUserProfile = async (userId) =>
   axios
-    .get(`https://lgfuel.onrender.com/api/accounts/get_user_profile/${userId}`)
+    .get(`http://127.0.0.1:8000/api/accounts/get_user_profile/${userId}`)
     .then((response) => {
       // console.log(response.data.stations);
       return response.data.user_profile;
@@ -39,7 +39,7 @@ export const getUserProfile = async (userId) =>
 export const updateUserProfile = async (name, avatar, phone, userId) => {
   // console.log(dateOfBirth)
   axios
-    .patch("https://lgfuel.onrender.com/api/accounts/update_user_profile", {
+    .patch("http://127.0.0.1:8000/api/accounts/update_user_profile", {
       username: name,
       avatar: avatar,
       phone: phone,
@@ -56,7 +56,7 @@ export const updateUserProfile = async (name, avatar, phone, userId) => {
 export const getUserFavouriteStation = async (userId) =>
   axios
     .get(
-      `https://lgfuel.onrender.com/api/station/get_favourite_station/${userId}`
+      `http://127.0.0.1:8000/api/station/get_favourite_station/${userId}`
     )
     .then((response) => {
       // console.log(response.data.stations);
@@ -69,7 +69,7 @@ export const getUserFavouriteStation = async (userId) =>
 export const removeStationFromFavourites = async (station, user) =>
   axios
     .delete(
-      `https://lgfuel.onrender.com/api/station/remove_station_from_favourite/${station}/${user}`
+      `http://127.0.0.1:8000/api/station/remove_station_from_favourite/${station}/${user}`
     )
     .then((response) => {
       return response.message;
@@ -80,7 +80,7 @@ export const removeStationFromFavourites = async (station, user) =>
 
 export const createUser = async (email, password, username, phoneNumber) =>
   axios
-    .post("https://lgfuel.onrender.com/api/accounts/create_user", {
+    .post("http://127.0.0.1:8000/api/accounts/create_user", {
       email: email,
       password: password,
       username: username,

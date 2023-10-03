@@ -68,7 +68,7 @@ export const deleteWithAuthorization = async (params) => {
 export const getStationInMyLocation = async (latitude, longitude) =>
   axios
     .get(
-      `https://lgfuel.onrender.com/api/station/get_stations_in_my_location?latitude=${latitude}&longtitude=${longitude}`
+      `http://127.0.0.1:8000/api/station/get_stations_in_my_location?latitude=${latitude}&longtitude=${longitude}`
     )
     .then((response) => {
       console.log(response.data);
@@ -81,7 +81,7 @@ export const getStationInMyLocation = async (latitude, longitude) =>
 export const getStationReview = async (stationId) =>
   axios
     .get(
-      `https://lgfuel.onrender.com/api/review/get_station_reviews/${stationId}`
+      `http://127.0.0.1:8000/api/review/get_station_reviews/${stationId}`
     )
     .then((response) => {
       // console.log(response.data.stations);
