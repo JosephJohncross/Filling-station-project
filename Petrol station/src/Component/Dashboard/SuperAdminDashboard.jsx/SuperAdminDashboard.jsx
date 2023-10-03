@@ -23,7 +23,7 @@ import {
   deleteStation,
 } from "../../../Services/admin-request";
 import AuthContext from "../../../Context/AuthContext";
-import { Collapse, initTE } from "tw-elements";
+import { Collapse, initTE, Sidenav } from "tw-elements";
 
 const reducerFunction = (draft, action) => {
   switch (action.type) {
@@ -146,7 +146,7 @@ const SuperAdminDashboard = () => {
   const { logoutUser } = useContext(AuthContext);
 
   useEffect(() => {
-    initTE({ Collapse });
+    initTE({ Collapse, Sidenav });
   }, []);
 
   useEffect(() => {
